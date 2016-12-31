@@ -26,9 +26,13 @@ Neat huh?
 == Source Code
 
 [source,java]
-.Java code from project
+.Inline Java code
 ----
-include::{sourcedir}/Controller/ControllerMain.java[tags=contains,indent=0]
+public class HelloWorld {
+	public static void main(String[] args) {
+		System.out.println("Hello World!");
+	}
+}
 ----
 
 This page was built by the following command:
@@ -55,6 +59,11 @@ include::subdir/_b.adoc[]
 
 [.thumb]
 image::sunset.jpg[scaledwidth=75%]
+
+== Images from the net
+
+[.thumb]
+image::https://www.ruby-lang.org/images/header-ruby-logo.png[scaledwidth=75%]
 
 == Attributes
 
