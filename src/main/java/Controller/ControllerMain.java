@@ -21,7 +21,10 @@ import org.asciidoctor.extension.JavaExtensionRegistry;
  * @author LEVALLOIS
  */
 public class ControllerMain {
-
+    /**
+     * Not needed in Maven approach
+     */
+    // tag::contains[]
     public static void main(String[] args) throws IOException {
 
         Asciidoctor asciidoctor = Asciidoctor.Factory.create();
@@ -49,5 +52,6 @@ public class ControllerMain {
         
         asciidoctor.shutdown();
     }
+    // end::contains[]
 
 }

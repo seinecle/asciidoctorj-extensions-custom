@@ -18,8 +18,9 @@ public class ImagePreprocessorExtension implements ExtensionRegistry{
     @Override
   public void register(Asciidoctor asciidoctor) {
 
-    JavaExtensionRegistry javaExtensionRegistry = asciidoctor.javaExtensionRegistry();
-    javaExtensionRegistry.preprocessor(ImagePreprocessor.class);
+        System.out.println("---------------------------------------------------------------");
+        JavaExtensionRegistry javaExtensionRegistry = asciidoctor.javaExtensionRegistry();
+        javaExtensionRegistry.preprocessor(ImagePreprocessor.class);
   }
     
 }

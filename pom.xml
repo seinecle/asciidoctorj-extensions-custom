@@ -14,27 +14,37 @@
         <project.slides.directory>${project.build.directory}/generated-slides</project.slides.directory>
         <asciidoctor.maven.plugin.version>1.5.3</asciidoctor.maven.plugin.version>
         <asciidoctorj.version>1.5.4.1</asciidoctorj.version>
+        <asciidoctorj.pdf.version>1.5.0-alpha.11</asciidoctorj.pdf.version>
         <jruby.version>1.7.25</jruby.version>
         <revealjs.version>3.1.0</revealjs.version>
         <asciidoctor-revealjs.version>master</asciidoctor-revealjs.version>
     </properties>
-    
+
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.asciidoctor/asciidoctorj-pdf -->
-        <dependency>
-            <groupId>org.asciidoctor</groupId>
-            <artifactId>asciidoctorj-pdf</artifactId>
-            <version>1.5.0-alpha.11</version>
-        </dependency>
+        <!-- Dependency required for extensions  -->
         <dependency>
             <groupId>org.asciidoctor</groupId>
             <artifactId>asciidoctorj</artifactId>
-            <version>1.5.4</version>
+            <version>${asciidoctorj.version}</version>
         </dependency>
-
     </dependencies>
+
     <build>
+        <!--
+        Plugin attach to different phases of the build process to customize it.
+        (see https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference).
+
+        Here:
+          * Attach `download-maven-plugin` during `initialize` to download and install reveal.js tools in the `target` dir.
+          * Attach `asciidoctor-maven-plugin` during `generate-resources` to convert AsciiDoc documents to outputs.
+              Separated `executions` allow to define different outputs with different options.
+              Use initial `configuration` section for shared configurations across all executions.
+
+            Note: the phases used are 50% a matter of taste.
+        -->
         <plugins>
+            <!-- Not necessary in maven approach -->
+            <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -43,7 +53,7 @@
                     <execution>
                         <goals>
                             <goal>java</goal>
-                        </goals>                            
+                        </goals>
                     </execution>
                 </executions>
                 <configuration>
@@ -54,14 +64,15 @@
                     </arguments>
                 </configuration>
             </plugin>
+            -->
             <plugin>
                 <groupId>com.googlecode.maven-download-plugin</groupId>
                 <artifactId>download-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>1.3.0</version>
                 <executions>
                     <execution>
                         <id>install-asciidoctor-revealjs</id>
-                        <phase>generate-resources</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>wget</goal>
                         </goals>
@@ -71,10 +82,10 @@
                             <outputFileName>asciidoctor-reveal.js-${asciidoctor-revealjs.version}.zip</outputFileName>
                             <outputDirectory>${project.build.directory}</outputDirectory>
                         </configuration>
-                    </execution>                    
+                    </execution>
                     <execution>
                         <id>install-revealjs</id>
-                        <phase>generate-resources</phase>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>wget</goal>
                         </goals>
@@ -84,34 +95,50 @@
                             <outputFileName>reveal.js-${revealjs.version}.zip</outputFileName>
                             <outputDirectory>${project.slides.directory}</outputDirectory>
                         </configuration>
-                    </execution>                     
+                    </execution>
                 </executions>
-            </plugin>               
+            </plugin>
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
                 <version>${asciidoctor.maven.plugin.version}</version>
                 <dependencies>
                     <!-- Comment this section to use the default jruby artifact provided by the plugin -->
+                    <!-- The Asciidoctor core converter is written in Ruby, we use jRuby to integrate it.
+                         Some extensions or converters may require special versions of jRuby.
+                     -->
                     <dependency>
                         <groupId>org.jruby</groupId>
                         <artifactId>jruby-complete</artifactId>
                         <version>${jruby.version}</version>
                     </dependency>
-                    <!-- Comment this section to use the default AsciidoctorJ artifact provided by the plugin -->
+                    <!-- Comment this section to use the default AsciidoctorJ artifact provided by the plugin (v 1.5.3) -->
+                    <!-- Version of AsciidoctorJ, ensure it's the same as in dependencies with property -->
                     <dependency>
                         <groupId>org.asciidoctor</groupId>
                         <artifactId>asciidoctorj</artifactId>
                         <version>${asciidoctorj.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj-pdf</artifactId>
+                        <version>${asciidoctorj.pdf.version}</version>
+                    </dependency>
                 </dependencies>
+                <!-- Shared configurations across `executions`. Can be overwritten if needed by an executions -->
                 <configuration>
+                    <!-- Current configuration uses default layout.
+                     I'd recommend keeping everything under `src/main/asciidoc`, docs, images, etc and use GIT or SVN to
+                     track versions.
+                     -->
+                    <!--
                     <sourceDirectory>C:\Users\levallois\Google Drive\open\gephi tutorial\history-of-gephi\en\temp</sourceDirectory>
+                    -->
                 </configuration>
                 <executions>
                     <execution>
                         <id>generate-slides</id>
-                        <phase>process-resources</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>process-asciidoc</goal>
                         </goals>
@@ -126,6 +153,7 @@
                                 -->
                                 <revealjsdir>reveal.js-${revealjs.version}</revealjsdir>
                                 <!-- put here the reveal.js specific attributes -->
+                                <!-- see https://github.com/asciidoctor/asciidoctor-reveal.js/#revealjs-options -->
                                 <sourcedir>${basedir}/src/main/java</sourcedir>
                                 <revealjs_theme>white</revealjs_theme>
                                 <revealjs_transition>linear</revealjs_transition>
@@ -133,7 +161,45 @@
                                 <project-version>${project.version}</project-version>
                             </attributes>
                         </configuration>
-                    </execution>                    
+                    </execution>
+                    <execution>
+                        <id>generate-pdf</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/generated-pdf</outputDirectory>
+                            <backend>pdf</backend>
+                            <sourceHighlighter>coderay</sourceHighlighter>
+                            <attributes>
+                                <icons>font</icons>
+                                <pagenums/>
+                                <toc/>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <delete includeemptydirs="true">
+                                    <fileset dir="${project.build.directory}/generated-pdf"
+                                             excludes="*.pdf"/>
+                                </delete>
+                            </target>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

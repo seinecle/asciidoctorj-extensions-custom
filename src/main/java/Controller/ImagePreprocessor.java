@@ -5,13 +5,13 @@
  */
 package Controller;
 
+import org.asciidoctor.ast.Document;
+import org.asciidoctor.extension.Preprocessor;
+import org.asciidoctor.extension.PreprocessorReader;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -23,10 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
-import org.asciidoctor.ast.Document;
-import org.asciidoctor.extension.Preprocessor;
-import org.asciidoctor.extension.PreprocessorReader;
 
 public class ImagePreprocessor extends Preprocessor {
 
@@ -48,6 +44,7 @@ public class ImagePreprocessor extends Preprocessor {
 
     @Override
     public PreprocessorReader process(Document document, PreprocessorReader reader) {
+        System.out.println("------ Executing " + this.getClass().getSimpleName() + " ----------------");
 
         //reading the doc, detecting image::http... and replacing it with the pic that is downloaded.
         StringBuilder sb = new StringBuilder();
