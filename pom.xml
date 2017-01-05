@@ -21,11 +21,36 @@
         <jruby.version>1.7.25</jruby.version>
         <revealjs.version>3.1.0</revealjs.version>
         <asciidoctor-revealjs.version>master</asciidoctor-revealjs.version>
+        <mainDirectory>${project}</mainDirectory>
     </properties>
 
     <modules>
         <module>asciidoctorj-extensions</module>
-        <module>docs</module>
+        <module>../blog/docs</module>
     </modules>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.commonjava.maven.plugins</groupId>
+                <artifactId>directory-maven-plugin</artifactId>
+                <version>0.1</version>
+                <executions>
+                    <execution>
+                        <id>directories</id>
+                        <goals>
+                            <goal>directory-of</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <property>myproject.basedir</property>
+                            <project>
+                                <groupId>net.clementlevallois</groupId>
+                                <artifactId>AsciiiDocMavenJavaSE</artifactId>
+                            </project>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -19,6 +19,18 @@
             <displayName>process slides for asciidoc</displayName>
             <goals>
                 <goal>process-resources</goal>
+                <goal>package</goal>
+                
             </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-debug</actionName>
+            <displayName>debug</displayName>
+            <goals>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <jpda.listen>maven</jpda.listen>
+            </properties>
         </action>
     </actions>
