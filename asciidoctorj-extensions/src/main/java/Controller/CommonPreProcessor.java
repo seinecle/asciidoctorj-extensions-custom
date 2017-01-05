@@ -47,7 +47,6 @@ public class CommonPreProcessor extends Preprocessor {
     public PreprocessorReader process(Document document, PreprocessorReader reader) {
 
         asciiDocBasedir = System.getProperty("asciiDocMavenJavaSE.basedir"); 
-        docBasedir = Paths.get(asciiDocBasedir);
         docBasedir = Paths.get((String)document.getAttr("docdir"));
 
         //reading the doc, detecting image::http... and replacing it with the pic that is downloaded.
@@ -77,7 +76,7 @@ public class CommonPreProcessor extends Preprocessor {
         path.toFile().mkdirs();
 
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), document.doctitle() + "_temp_common.adoc")), "UTF-8"));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String)document.getAttr("docname") + "_temp_common.md")), "UTF-8"));
             bw.write(sb.toString());
             bw.close();
         } catch (IOException ex) {

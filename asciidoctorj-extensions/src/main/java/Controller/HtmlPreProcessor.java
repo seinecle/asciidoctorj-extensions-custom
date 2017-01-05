@@ -26,8 +26,8 @@ import java.util.regex.Pattern;
 
 public class HtmlPreProcessor extends Preprocessor {
 
-
     String param;
+    Path docBasedir;
 
     public HtmlPreProcessor(Map<String, Object> config) {
         super(config);
@@ -35,10 +35,33 @@ public class HtmlPreProcessor extends Preprocessor {
 
     @Override
     public PreprocessorReader process(Document document, PreprocessorReader reader) {
-        
+
         System.out.println("in the html preprocessor");
-        
-        
+
+        docBasedir = Paths.get((String) document.getAttr("docdir"));
+
+        //writing this modified document to a temp folder, to be used by the revealjs maven build (see POM)
+        final Path path = Paths.get(docBasedir.toString() + "/subdir");
+        path.toFile().mkdirs();
+
+        StringBuilder sb = new StringBuilder();
+
+        List<String> lines = reader.readLines();
+
+        for (String line : lines) {
+
+            sb.append(line);
+            sb.append("\n");
+        }
+        reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
+
+        try {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttr("docname") + "_temp_html.md")), "UTF-8"));
+            bw.write(sb.toString());
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return reader;
     }

@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 public class SlidesPreProcessor extends Preprocessor {
 
     String param;
+    Path docBasedir;
 
     public SlidesPreProcessor(Map<String, Object> config) {
         super(config);
@@ -37,12 +38,17 @@ public class SlidesPreProcessor extends Preprocessor {
 
         System.out.println("in the slides preprocessor");
         StringBuilder sb = new StringBuilder();
+        docBasedir = Paths.get((String) document.getAttr("docdir"));
+
+        //writing this modified document to a temp folder, to be used by the revealjs maven build (see POM)
+        final Path path = Paths.get(docBasedir.toString() + "/subdir");
+        path.toFile().mkdirs();
 
         List<String> lines = reader.readLines();
 
         // managing titles and slides beginnings
         for (String line : lines) {
-            if (line.startsWith("==")){
+            if (line.startsWith("==")) {
                 continue;
             }
             if (line.startsWith("//ST: ")) {
@@ -54,12 +60,8 @@ public class SlidesPreProcessor extends Preprocessor {
         }
         reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
 
-        //writing this modified document to a temp folder for debugging
-        final Path path = Paths.get(param + "\\docs\\src\\main\\asciidoc\\subdir");
-        path.toFile().mkdirs();
-
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), document.doctitle() + "_temp_pdf.adoc")), "UTF-8"));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttr("docname") + "_temp_slides.md")), "UTF-8"));
             bw.write(sb.toString());
             bw.close();
         } catch (IOException ex) {
