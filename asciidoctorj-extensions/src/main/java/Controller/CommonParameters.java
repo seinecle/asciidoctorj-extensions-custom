@@ -9,7 +9,7 @@ package Controller;
  *
  * @author LEVALLOIS
  */
-public class Parameters {
+public class CommonParameters {
     
     
     public static String localDirectory = "C:\\Users\\levallois\\Google Drive\\open\\gephi tutorial\\";
@@ -20,7 +20,7 @@ public class Parameters {
     public static boolean applyDefaultPicWidth = true;
     public static boolean applyDefaultPicHeight = true;
     
-    public static String defaultPicWidth = "300";
-    public static String defaultPicHeight = "300";
+    public static String defaultPicWidth = "450";
+    public static String defaultPicHeight = "450";
     
 }

@@ -24,26 +24,32 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ImagePreprocessor extends Preprocessor {
+public class CommonPreProcessor extends Preprocessor {
 
     //this pre processor does  things:
     //1. downloading the image urls and saving them to png, then replacin image:: http://... byt image: download.png in the aasciidoc document
     //2. writing this new version of the asciidoc in a temp folder. The maven build for revealjs will use the doc from this temp folder.
-
     //later, I will add more tasks to this pre-processor, split in several pre preprocessors for maintainability.
-
     private static final Pattern urlPattern = Pattern.compile(
             "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)",
             Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
-    public ImagePreprocessor(Map<String, Object> config) {
+    String asciiDocBasedir;
+    Path docBasedir;
+
+    public CommonPreProcessor(Map<String, Object> config) {
         super(config);
     }
 
     @Override
     public PreprocessorReader process(Document document, PreprocessorReader reader) {
+
+        asciiDocBasedir = System.getProperty("asciiDocMavenJavaSE.basedir"); 
+        docBasedir = Paths.get(asciiDocBasedir);
+        docBasedir = Paths.get((String)document.getAttr("docdir"));
+
         //reading the doc, detecting image::http... and replacing it with the pic that is downloaded.
         StringBuilder sb = new StringBuilder();
 
@@ -51,32 +57,32 @@ public class ImagePreprocessor extends Preprocessor {
 
         for (String line : lines) {
             if (line.startsWith("image::http")) {
+                String extension = "[" + line.split("\\[")[1];
+
                 try {
                     String titlePic = downloadPicAndReturnTitle(line);
-                    line = "image::" + titlePic + ".png[" + titlePic + "]";
+                    line = "image::" + titlePic + ".png" + extension;
                 } catch (IOException ex) {
-                    Logger.getLogger(ImagePreprocessor.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
             sb.append(line);
             sb.append("\n");
-            System.out.println("line: " + line);
         }
         reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
 
         //writing this modified document to a temp folder, to be used by the revealjs maven build (see POM)
-        final Path path = Paths.get(Parameters.localDirectory + Parameters.endOfPath + "temp");
+        final Path path = Paths.get(docBasedir.toString()+"/subdir");
         path.toFile().mkdirs();
 
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(),"temp.adoc")),"UTF-8"));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), document.doctitle() + "_temp_common.adoc")), "UTF-8"));
             bw.write(sb.toString());
             bw.close();
         } catch (IOException ex) {
-            Logger.getLogger(ImagePreprocessor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return reader;
     }
 
@@ -90,8 +96,14 @@ public class ImagePreprocessor extends Preprocessor {
             subline = subline.replaceAll("\"", "");
             title = subline;
         } else {
-            title = "no-title";
+            String extension = line.split("\\[")[1].replace("]", "");
+            if (!extension.contains("=")) {
+                title = extension;
+            } else {
+                title = "no-title";
+            }
         }
+        title = title.replaceAll("[ ,()]", "-");
         System.out.println("title of pic: " + title);
 
         while (matcher.find()) {
@@ -101,20 +113,20 @@ public class ImagePreprocessor extends Preprocessor {
             urlInLine = urlInLine.substring(0, urlInLine.indexOf("["));
 
             //applying default width:
-            if (Parameters.applyDefaultPicHeight) {
+            if (CommonParameters.applyDefaultPicHeight) {
                 if (urlInLine.contains("?w=")) {
                     urlInLine = urlInLine.substring(0, urlInLine.indexOf("?w="));
                 }
-                urlInLine = urlInLine + "?h=" + Parameters.defaultPicHeight;
+                urlInLine = urlInLine + "?h=" + CommonParameters.defaultPicHeight;
             }
 
             URL url = new URL(urlInLine);
             System.out.println("url: " + urlInLine);
             image = ImageIO.read(url);
-            Path path = Paths.get(Parameters.localDirectory + "images\\" + title + ".png");
-            path.toFile().mkdirs();
-            Files.deleteIfExists(path);
-            File imageFile = new File(Parameters.localDirectory + "images", title + ".png");
+//            Path path = Paths.get(docBasedir.toString()+ "/images/" + title + ".png");
+//            path.toFile().mkdirs();
+//            Files.deleteIfExists(path);
+            File imageFile = new File(docBasedir.toString()+ "/images/", title + ".png");
             System.out.println("Saving image to: " + imageFile.getAbsolutePath());
             ImageIO.write(image, "png", imageFile);
         }
