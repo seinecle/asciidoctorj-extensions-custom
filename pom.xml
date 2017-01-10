@@ -26,6 +26,7 @@
 
     <modules>
         <module>asciidoctorj-extensions</module>
+        <module>MojoPublishToMedium</module>
         <module>../blog/docs</module>
     </modules>
     <build>
