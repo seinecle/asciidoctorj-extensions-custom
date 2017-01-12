@@ -27,7 +27,7 @@
     <modules>
         <module>asciidoctorj-extensions</module>
         <module>MojoPublishToMedium</module>
-        <module>../blog/docs</module>
+        <module>../gephi tutorials/docs</module>
     </modules>
     <build>
         <plugins>

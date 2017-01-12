@@ -46,21 +46,24 @@ public class CommonPreProcessor extends Preprocessor {
     @Override
     public PreprocessorReader process(Document document, PreprocessorReader reader) {
 
-        asciiDocBasedir = System.getProperty("asciiDocMavenJavaSE.basedir"); 
-        docBasedir = Paths.get((String)document.getAttr("docdir"));
+        asciiDocBasedir = System.getProperty("asciiDocMavenJavaSE.basedir");
+        docBasedir = Paths.get((String) document.getAttr("docdir"));
 
-        //reading the doc, detecting image::http... and replacing it with the pic that is downloaded.
         StringBuilder sb = new StringBuilder();
 
         List<String> lines = reader.readLines();
 
         for (String line : lines) {
+             //detecting image::http... and replacing it with the pic that is downloaded.
             if (line.startsWith("image::http")) {
                 String extension = "[" + line.split("\\[")[1];
 
                 try {
                     String titlePic = downloadPicAndReturnTitle(line);
                     line = "image::" + titlePic + ".png" + extension;
+                    //adding a blankline after pics, because otherwise the caption gets too close to the following text
+                    String blankLine = "\n{nbsp} +";
+                    line = line+blankLine;
                 } catch (IOException ex) {
                     Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -72,11 +75,11 @@ public class CommonPreProcessor extends Preprocessor {
         reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
 
         //writing this modified document to a temp folder, to be used by the revealjs maven build (see POM)
-        final Path path = Paths.get(docBasedir.toString()+"/subdir");
+        final Path path = Paths.get(docBasedir.toString() + "/subdir");
         path.toFile().mkdirs();
 
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String)document.getAttr("docname") + "_temp_common.md")), "UTF-8"));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttr("docname") + "_temp_common.md")), "UTF-8"));
             bw.write(sb.toString());
             bw.close();
         } catch (IOException ex) {
@@ -94,6 +97,9 @@ public class CommonPreProcessor extends Preprocessor {
             subline = subline.substring(subline.indexOf("=") + 1, subline.indexOf("]"));
             subline = subline.replaceAll("\"", "");
             title = subline;
+            if(title.isEmpty()){
+                title = "no-title";
+            }
         } else {
             String extension = line.split("\\[")[1].replace("]", "");
             if (!extension.contains("=")) {
@@ -116,7 +122,9 @@ public class CommonPreProcessor extends Preprocessor {
                 if (urlInLine.contains("?w=")) {
                     urlInLine = urlInLine.substring(0, urlInLine.indexOf("?w="));
                 }
-                urlInLine = urlInLine + "?h=" + CommonParameters.defaultPicHeight;
+                if (urlInLine.contains("docs.google.com/drawings")) {
+                    urlInLine = urlInLine + "?h=" + CommonParameters.defaultPicHeight;
+                }
             }
 
             URL url = new URL(urlInLine);
@@ -125,7 +133,7 @@ public class CommonPreProcessor extends Preprocessor {
 //            Path path = Paths.get(docBasedir.toString()+ "/images/" + title + ".png");
 //            path.toFile().mkdirs();
 //            Files.deleteIfExists(path);
-            File imageFile = new File(docBasedir.toString()+ "/images/", title + ".png");
+            File imageFile = new File(docBasedir.toString() + "/images/", title + ".png");
             System.out.println("Saving image to: " + imageFile.getAbsolutePath());
             ImageIO.write(image, "png", imageFile);
         }
