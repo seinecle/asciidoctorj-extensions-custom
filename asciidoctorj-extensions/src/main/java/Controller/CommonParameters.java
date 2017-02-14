@@ -12,15 +12,12 @@ package Controller;
 public class CommonParameters {
     
     
-    public static String localDirectory = "C:\\Users\\levallois\\Google Drive\\open\\gephi tutorial\\";
-    public static String endOfPath = "history-of-gephi\\en\\";
-
-    public static String docName = "slide";
-    
-    public static boolean applyDefaultPicWidth = true;
-    public static boolean applyDefaultPicHeight = true;
+//    public static boolean applyDefaultPicWidth = true;
+    public static boolean applyDefaultPicHeight = false;
     
     public static String defaultPicWidth = "450";
-    public static String defaultPicHeight = "450";
+    public static String defaultPicHeight = "550";
+    
+    public static boolean forcePicturesRefresh= false;
     
 }

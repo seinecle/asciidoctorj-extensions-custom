@@ -9,20 +9,13 @@ import org.asciidoctor.ast.Document;
 import org.asciidoctor.extension.Preprocessor;
 import org.asciidoctor.extension.PreprocessorReader;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PdfPreProcessor extends Preprocessor {
 
@@ -39,6 +32,8 @@ public class PdfPreProcessor extends Preprocessor {
         System.out.println("in the pdf preprocessor");
 
         docBasedir = Paths.get((String) document.getAttr("docdir"));
+        
+//        System.out.println("doc base dir in pdf pre processor: "+docBasedir.toString());
 
         //writing this modified document to a temp folder, to be used by the revealjs maven build (see POM)
         final Path path = Paths.get(docBasedir.toString() + "/subdir");
@@ -53,6 +48,12 @@ public class PdfPreProcessor extends Preprocessor {
             if (line.startsWith("pass:")){
                 continue;
             }
+            if (line.trim().startsWith("image:") && line.toLowerCase().contains(".gif")){
+                line = "";
+            }
+            if (line.startsWith("//PDF:")){
+                line = line.replace("//PDF:", "").trim();
+            }
 
             sb.append(line);
             sb.append("\n");
@@ -60,7 +61,7 @@ public class PdfPreProcessor extends Preprocessor {
         reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
 
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttr("docname") + "_temp_html.md")), "UTF-8"));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttr("docname") + "_temp_pdf.md")), "UTF-8"));
             bw.write(sb.toString());
             bw.close();
         } catch (IOException ex) {

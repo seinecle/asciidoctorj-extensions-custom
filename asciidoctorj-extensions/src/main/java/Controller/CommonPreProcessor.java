@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 public class CommonPreProcessor extends Preprocessor {
 
     //this pre processor does  things:
-    //1. downloading the image urls and saving them to png, then replacin image:: http://... byt image: download.png in the aasciidoc document
+    //1. downloading the image urls and saving them to png, then replacing image:: http://... by image: download.png in the aasciidoc document
     //2. writing this new version of the asciidoc in a temp folder. The maven build for revealjs will use the doc from this temp folder.
     //later, I will add more tasks to this pre-processor, split in several pre preprocessors for maintainability.
     private static final Pattern urlPattern = Pattern.compile(
@@ -54,18 +54,16 @@ public class CommonPreProcessor extends Preprocessor {
         List<String> lines = reader.readLines();
 
         for (String line : lines) {
-             //detecting image::http... and replacing it with the pic that is downloaded.
+            //detecting image::http... and replacing it with the pic that is downloaded.
             if (line.startsWith("image::http")) {
                 String extension = "[" + line.split("\\[")[1];
-
-                try {
-                    String titlePic = downloadPicAndReturnTitle(line);
-                    line = "image::" + titlePic + ".png" + extension;
-                    //adding a blankline after pics, because otherwise the caption gets too close to the following text
-                    String blankLine = "\n{nbsp} +";
-                    line = line+blankLine;
-                } catch (IOException ex) {
-                    Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
+                if (!line.split("\\[")[0].endsWith(".gif") & !line.split("\\[")[0].endsWith(".png") & !line.split("\\[")[0].endsWith(".jpg") & !line.split("\\[")[0].endsWith(".jpeg")) {
+                    try {
+                        String titlePic = downloadPicAndReturnTitle(line);
+                        line = "image::" + titlePic + ".png" + extension;
+                    } catch (IOException ex) {
+                        Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
 
@@ -97,15 +95,15 @@ public class CommonPreProcessor extends Preprocessor {
             subline = subline.substring(subline.indexOf("=") + 1, subline.indexOf("]"));
             subline = subline.replaceAll("\"", "");
             title = subline;
-            if(title.isEmpty()){
-                title = "no-title";
+            if (title.isEmpty()) {
+                title = "";
             }
         } else {
             String extension = line.split("\\[")[1].replace("]", "");
             if (!extension.contains("=")) {
                 title = extension;
             } else {
-                title = "no-title";
+                title = "";
             }
         }
         title = title.replaceAll("[ ,()]", "-");
@@ -127,17 +125,23 @@ public class CommonPreProcessor extends Preprocessor {
                 }
             }
 
+            File imageFile = new File(docBasedir.toString() + "/images/", title + ".png");
+            
+            if (imageFile.exists() && !CommonParameters.forcePicturesRefresh){
+                continue;
+            }
+
+            
+            
             URL url = new URL(urlInLine);
             System.out.println("url: " + urlInLine);
             image = ImageIO.read(url);
 //            Path path = Paths.get(docBasedir.toString()+ "/images/" + title + ".png");
 //            path.toFile().mkdirs();
 //            Files.deleteIfExists(path);
-            File imageFile = new File(docBasedir.toString() + "/images/", title + ".png");
             System.out.println("Saving image to: " + imageFile.getAbsolutePath());
             ImageIO.write(image, "png", imageFile);
         }
         return title;
     }
-
 }

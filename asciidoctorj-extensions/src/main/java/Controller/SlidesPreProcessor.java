@@ -9,20 +9,13 @@ import org.asciidoctor.ast.Document;
 import org.asciidoctor.extension.Preprocessor;
 import org.asciidoctor.extension.PreprocessorReader;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SlidesPreProcessor extends Preprocessor {
 
@@ -48,12 +41,22 @@ public class SlidesPreProcessor extends Preprocessor {
 
         // managing titles and slides beginnings
         for (String line : lines) {
-            if (line.startsWith("==")) {
+            if (line.startsWith("== ")) {
                 continue;
             }
-            if (line.startsWith("//ST: ")) {
-                line = line.replace("//ST: ", "== ");
+            if (line.startsWith("//ST:")) {
+                line = line.replace("//ST:", "== ").trim();
+                if (line.equals("==")){
+                    line = line + " !";
+                }
             }
+            
+            //adding a "stretch" class to images. See: https://github.com/asciidoctor/asciidoctor-reveal.js/#stretch-class-attribute
+            if (line.startsWith("image::")) {
+                sb.append("[.stretch]");
+                sb.append("\n");
+            }
+            
 
             sb.append(line);
             sb.append("\n");
