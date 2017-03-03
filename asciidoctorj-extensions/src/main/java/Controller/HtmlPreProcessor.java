@@ -28,6 +28,9 @@ public class HtmlPreProcessor extends Preprocessor {
 
     String param;
     Path docBasedir;
+    String statcounterProject;
+    String statcounterSecurity;
+    String statcounter;
 
     public HtmlPreProcessor(Map<String, Object> config) {
         super(config);
@@ -36,7 +39,10 @@ public class HtmlPreProcessor extends Preprocessor {
     @Override
     public PreprocessorReader process(Document document, PreprocessorReader reader) {
 
-        System.out.println("in the html preprocessor");
+        statcounterProject = (String) document.getAttr("statcounter-project");
+        statcounterSecurity = (String) document.getAttr("statcounter-security");
+        statcounter = buildStatCounterString();
+        
 
         docBasedir = Paths.get((String) document.getAttr("docdir"));
 
@@ -53,6 +59,10 @@ public class HtmlPreProcessor extends Preprocessor {
             sb.append(line);
             sb.append("\n");
         }
+
+        sb.append("pass:[" + statcounter + "]");
+        sb.append("\n");
+
         reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
 
         try {
@@ -64,6 +74,29 @@ public class HtmlPreProcessor extends Preprocessor {
         }
 
         return reader;
+    }
+
+    private String buildStatCounterString() {
+            statcounter = "    <!-- Start of StatCounter Code for Default Guide -->\n"
+            + "    <script type=\"text/javascript\">\n"
+            + "        var sc_project = " + statcounterProject+";\n"
+            + "        var sc_invisible = 1;\n"
+            + "        var sc_security = \""+statcounterSecurity+"\";\n"
+            + "        var scJsHost = ((\"https:\" == document.location.protocol) ?\n"
+            + "            \"https://secure.\" : \"http://www.\");\n"
+            + "        document.write(\"<sc\" + \"ript type='text/javascript' src='\" +\n"
+            + "            scJsHost +\n"
+            + "            \"statcounter.com/counter/counter.js'></\" + \"script>\");\n"
+            + "    </script>\n"
+            + "    <noscript><div class=\"statcounter\"><a title=\"site stats\"\n"
+            + "    href=\"http://statcounter.com/\" target=\"_blank\"><img\n"
+            + "    class=\"statcounter\"\n"
+            + "    src=\"//c.statcounter.com/"+statcounterProject+"/0/"+statcounterSecurity+"/1/\" alt=\"site\n"
+            + "    stats\"></a></div></noscript>\n"
+            + "    <!-- End of StatCounter Code for Default Guide -->";
+            
+            return statcounter;
+
     }
 
 }

@@ -54,6 +54,7 @@ public class CommonPreProcessor extends Preprocessor {
         List<String> lines = reader.readLines();
 
         for (String line : lines) {
+
             //detecting image::http... and replacing it with the pic that is downloaded.
             if (line.startsWith("image::http")) {
                 String extension = "[" + line.split("\\[")[1];
@@ -69,6 +70,11 @@ public class CommonPreProcessor extends Preprocessor {
 
             sb.append(line);
             sb.append("\n");
+
+            //adding an empty line after pictures and their legend.
+            if (line.startsWith("image::")) {
+                sb.append("{nbsp} +\n");
+            }
         }
         reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
 
@@ -126,13 +132,11 @@ public class CommonPreProcessor extends Preprocessor {
             }
 
             File imageFile = new File(docBasedir.toString() + "/images/", title + ".png");
-            
-            if (imageFile.exists() && !CommonParameters.forcePicturesRefresh){
+
+            if (imageFile.exists() && !CommonParameters.forcePicturesRefresh) {
                 continue;
             }
 
-            
-            
             URL url = new URL(urlInLine);
             System.out.println("url: " + urlInLine);
             image = ImageIO.read(url);

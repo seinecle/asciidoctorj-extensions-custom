@@ -18,6 +18,6 @@ public class CommonParameters {
     public static String defaultPicWidth = "450";
     public static String defaultPicHeight = "550";
     
-    public static boolean forcePicturesRefresh= false;
+    public static boolean forcePicturesRefresh= true;
     
 }
