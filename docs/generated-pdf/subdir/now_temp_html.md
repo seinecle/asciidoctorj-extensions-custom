@@ -17,7 +17,7 @@ This is a now page. Websites usually have "about pages", this page gives a more 
 - teaching at emlyon's incubator, in our MSc in Marketing and Service Management and in our Programme Grande Ecole.
 - still hesitating on which object I should use to to teach a MOOC "Create a connected object, for beginners"
 - giving a webinar on Feb 09 on https://emlyon-business-school-forever.hivebrite.com/networks/emlyon-business-school-forever/events/1575[FrenchWeb] to discuss dataviz for business.
-- finished the setup of my new http://seinecle.github.io/gephi-tutorials[Gephi tutiorals]. Adding more tutorials.
+- finished the setup of my new http://seinecle.github.io/gephi-tutorials[Gephi tutorials]. Adding more tutorials.
 - continuing supervising centrale lyon and emlyon students on a Twitter mapping project
 - organizing the "Digital Night", a career event on March 16 at Ecully, for our digitally / data inclined students and companies who'd like to hire them.
 - working with my colleague Margherita Pagani on extending em lyon business school's course offering in digital marketing and business analytics (shht! secret plans!)
@@ -27,7 +27,7 @@ This is a now page. Websites usually have "about pages", this page gives a more 
 
 - taking contacts to create a course on "creating connected objects, for beginners". Will be filmed, for emlyon students and as a MOOC on Coursera (hopefully). Students will learn how to create an object, for real. Get in touch if you are interested.
 - preparing for the launch of the TDO (Transformation Digitale des Organisations) certificate by EMLYON, taking place in March 2017 on our new Paris campus. I teach the first module on "data and tech for business", 16-18 March, on our Paris campus
-- reworking my http://seinecle.github.io/gephi-tutorials[Gephi tutiorals] to make them open and easy to publish in a variety of formats, with http://asciidoctor.org/docs/what-is-asciidoc/[asciiidoc].
+- reworking my http://seinecle.github.io/gephi-tutorials[Gephi tutorials] to make them open and easy to publish in a variety of formats, with http://asciidoctor.org/docs/what-is-asciidoc/[asciiidoc].
 - supervising centrale lyon and emlyon students on a Twitter mapping project
 - organizing the "Digital Night", a career event on March 16 at Ecully, for our digitally / data inclined students and companies who'd like to hire them.
 - resubmitting my paper on the history of neuromarketing, co-written with Ale Smidts and Paul Wouters. Fingers crossed.

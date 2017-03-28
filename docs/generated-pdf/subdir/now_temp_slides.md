@@ -11,6 +11,16 @@ last modified: {docdate}
 This is a now page. Websites usually have "about pages", this page gives a more instantaneous view. Something I do / have done is of interest to you? Get in touch at levallois@em-lyon.com or on Twitter! (@seinecle)
 
 
+- now up to 14 http://seinecle.github.io/gephi-tutorials[tutorials for Gephi], more in preparation
+- re-published the similarity-computer plugin for Gephi: https://gephi.org/plugins/#/plugin/similaritycomputer
+- last preparation for the emlyon's digital night with 3DS, Accenture, Ada, Artefact and L'Oreal: http://data.em-lyon.com/2017/02/16/digital-night-2017/
+- last preparation for teaching the module "Technologies Digitales et Ruptures Business", with Guillaume Lecuyer from Visiativ and Romain Willmann (emlyon student and consultant) https://executive.em-lyon.com/Formations/Certificats/EMS02-Transformation-Digitale-des-Organisations
+- found the IoT object to use in my coming class (Sept 2017): a https://www.adafruit.com/products/3213[huzzah feather] + https://www.adafruit.com/product/2900[OLED screen]. But the huzzah with stacking headers is out of stock...
+
+
+
+
+
 - re-submitted the neuromarketing paper!
 - co-steering the recruitment of 2 new positions in our department: one professor in marketing and data analytics, one instructor position in coding / Excel / SQL. Get in touch!
 - teaching at emlyon's incubator, in our MSc in Marketing and Service Management and in our Programme Grande Ecole.
@@ -64,3 +74,20 @@ alt="joomla analytics" ></a></div></noscript>
 
 <!-- End of StatCounter Code -->
 ++++
+pass:[    <!-- Start of StatCounter Code for Default Guide -->
+    <script type="text/javascript">
+        var sc_project = null;
+        var sc_invisible = 1;
+        var sc_security = "null";
+        var scJsHost = (("https:" == document.location.protocol) ?
+            "https://secure." : "http://www.");
+        document.write("<sc" + "ript type='text/javascript' src='" +
+            scJsHost +
+            "statcounter.com/counter/counter.js'></" + "script>");
+    </script>
+    <noscript><div class="statcounter"><a title="site stats"
+    href="http://statcounter.com/" target="_blank"><img
+    class="statcounter"
+    src="//c.statcounter.com/null/0/null/1/" alt="site
+    stats"></a></div></noscript>
+    <!-- End of StatCounter Code for Default Guide -->]

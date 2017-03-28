@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package net.clementlevallois.asciidoc.extensions;
 
 /**
  *
@@ -18,6 +18,6 @@ public class CommonParameters {
     public static String defaultPicWidth = "450";
     public static String defaultPicHeight = "550";
     
-    public static boolean forcePicturesRefresh= true;
+    public static boolean forcePicturesRefresh= false;
     
 }

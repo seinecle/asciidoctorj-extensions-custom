@@ -10,6 +10,17 @@ last modified: {docdate}
 
 This is a now page. Websites usually have "about pages", this page gives a more instantaneous view. Something I do / have done is of interest to you? Get in touch at levallois@em-lyon.com or on Twitter! (@seinecle)
 
+== March 2017
+
+- now up to 14 http://seinecle.github.io/gephi-tutorials[tutorials for Gephi], more in preparation
+- re-published the similarity-computer plugin for Gephi: https://gephi.org/plugins/#/plugin/similaritycomputer
+- last preparation for the emlyon's digital night with 3DS, Accenture, Ada, Artefact and L'Oreal: http://data.em-lyon.com/2017/02/16/digital-night-2017/
+- last preparation for teaching the module "Technologies Digitales et Ruptures Business", with Guillaume Lecuyer from Visiativ and Romain Willmann (emlyon student and consultant) https://executive.em-lyon.com/Formations/Certificats/EMS02-Transformation-Digitale-des-Organisations
+- found the IoT object to use in my coming class (Sept 2017): a https://www.adafruit.com/products/3213[huzzah feather] + https://www.adafruit.com/product/2900[OLED screen]. But the huzzah with stacking headers is out of stock...
+
+
+
+
 == February 2017
 
 - re-submitted the neuromarketing paper!

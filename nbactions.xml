@@ -18,6 +18,7 @@
             <actionName>CUSTOM-process slides for asciidoc</actionName>
             <displayName>process slides for asciidoc</displayName>
             <goals>
+                <goal>install</goal>
                 <goal>process-resources</goal>
                 <goal>package</goal>
                 
@@ -31,6 +32,35 @@
             </goals>
             <properties>
                 <jpda.listen>maven</jpda.listen>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-build book</actionName>
+            <displayName>build book</displayName>
+            <goals>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <book-release>true</book-release>
+            </properties>
+        </action>
+        <action>
+            <actionName>build</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>install</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-generate table of content book</actionName>
+            <displayName>generate table of content book</displayName>
+            <goals>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <toc-generation>true</toc-generation>
             </properties>
         </action>
     </actions>
