@@ -10,6 +10,50 @@ last modified: {docdate}
 
 This is a now page. Websites usually have "about pages", this page gives a more instantaneous view. Something I do / have done is of interest to you? Get in touch at levallois@em-lyon.com or on Twitter! (@seinecle)
 
+== July 2017
+
+- Preparing the launch of a Data R&D Institute at emlyon! Curious? Get in touch.
+- Advanced on a new Msc for emlyon
+- Updating my "big data for business" course for 2017/2018
+- Created a MOOC "IoT for entrepreneurs" for the BBA on our campus at Saint Etienne. Video clips on Youtube soon!
+- submitted the 3rd and hopefully last revision of a paper from my previous life as a historian of science!
+- Developping a series of projects with a series of companies to promote our students.
+- still working on a fast algo for overlapping community detection
+- launched this app for my own use, but check it out: http://exploreyourdata.com/tiles
+
+== May 2017
+
+- Got my Elasticsearch + Redis setup to work, to analyze a large dataset from text mining and graph mining perspectives. Great results so far!
+- Preparing the MOOC on connected objects, for a shooting in the first week of July.
+- Teaching a module on "Big data" to eMBA students
+- Participating to recruitment committees, jurys... (that's the season for it)
+- More useful admin stuff to prepare for 2017/2018.
+- Got a minor revision before acceptance notice on a paper, more news on it when full acceptance is confirmed!
+
+
+== April 2017
+
+- preparing a book made of the Gephi tutorials, still with Asciidoc. Discovering the world of xsl-fo: https://en.wikipedia.org/wiki/XSL_Formatting_Objects
+- published a tutorial on Vosviewer: https://seinecle.github.io/vosviewer-tutorials/
+- teaching myself Linux security for the need of the Twitter project. Publishing what I learn as a tutorial: https://seinecle.github.io/linux-security-tutorials/
+- attending the Sido on April 5 to search for sponsors for my MOOC on IoT: http://www.sido-event.com/en/ (could not find time at the end :-(
+- teaching a couple of courses in MBA, supervising students.
+- practised Elasticsearch (with Kibana and Xpack for graphs) and Redis. Learned how to establish a connection between 2 Linux servers through SSH.
+
+
+
+
+== March 2017
+
+- now up to 14 http://seinecle.github.io/gephi-tutorials[tutorials for Gephi], more in preparation
+- re-published the similarity-computer plugin for Gephi: https://gephi.org/plugins/#/plugin/similaritycomputer
+- last preparation for the emlyon's digital night with 3DS, Accenture, Ada, Artefact and L'Oreal: http://data.em-lyon.com/2017/02/16/digital-night-2017/
+- last preparation for teaching the module "Technologies Digitales et Ruptures Business", with Guillaume Lecuyer from Visiativ and Romain Willmann (emlyon student and consultant) https://executive.em-lyon.com/Formations/Certificats/EMS02-Transformation-Digitale-des-Organisations
+- found the IoT object to use in my coming class (Sept 2017): a https://www.adafruit.com/products/3213[huzzah feather] + https://www.adafruit.com/product/2900[OLED screen]. But the huzzah with stacking headers is out of stock...
+
+
+
+
 == February 2017
 
 - re-submitted the neuromarketing paper!
@@ -66,3 +110,20 @@ alt="joomla analytics" ></a></div></noscript>
 
 <!-- End of StatCounter Code -->
 ++++
+pass:[    <!-- Start of StatCounter Code for Default Guide -->
+    <script type="text/javascript">
+        var sc_project = null;
+        var sc_invisible = 1;
+        var sc_security = "null";
+        var scJsHost = (("https:" == document.location.protocol) ?
+            "https://secure." : "http://www.");
+        document.write("<sc" + "ript type='text/javascript' src='" +
+            scJsHost +
+            "statcounter.com/counter/counter.js'></" + "script>");
+    </script>
+    <noscript><div class="statcounter"><a title="site stats"
+    href="http://statcounter.com/" target="_blank"><img
+    class="statcounter"
+    src="//c.statcounter.com/null/0/null/1/" alt="site
+    stats"></a></div></noscript>
+    <!-- End of StatCounter Code for Default Guide -->]

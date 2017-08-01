@@ -10,8 +10,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+<!--        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>-->
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <asciidoctor.maven.plugin.version>1.5.3</asciidoctor.maven.plugin.version>
@@ -25,10 +25,13 @@
 
     <modules>
         <module>asciidoctorj-extensions</module>
-        <module>MojoPublishToMedium</module>
+        <!--<module>MojoPublishToMedium</module>-->
         <!--<module>../gephi tutorials/docs/</module>-->
-        <module>../gephi scientometrics training/docs/</module>
+        <!--<module>../linux security tutorials/docs/</module>-->
+        <!--<module>../gephi scientometrics training/docs/</module>-->
         <!--<module>../vosviewer tutorials/docs/</module>-->
+        <!--<module>../mk99/docs/</module>-->
+        <module>../IoT for entrepreneurs/docs/</module>
         <!--<module>../compiler for single docs/docs/</module>-->
     </modules>
     <build>

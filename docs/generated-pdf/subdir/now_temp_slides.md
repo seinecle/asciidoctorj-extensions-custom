@@ -11,6 +11,36 @@ last modified: {docdate}
 This is a now page. Websites usually have "about pages", this page gives a more instantaneous view. Something I do / have done is of interest to you? Get in touch at levallois@em-lyon.com or on Twitter! (@seinecle)
 
 
+- Preparing the launch of a Data R&D Institute at emlyon! Curious? Get in touch.
+- Advanced on a new Msc for emlyon
+- Updating my "big data for business" course for 2017/2018
+- Created a MOOC "IoT for entrepreneurs" for the BBA on our campus at Saint Etienne. Video clips on Youtube soon!
+- submitted the 3rd and hopefully last revision of a paper from my previous life as a historian of science!
+- Developping a series of projects with a series of companies to promote our students.
+- still working on a fast algo for overlapping community detection
+- launched this app for my own use, but check it out: http://exploreyourdata.com/tiles
+
+
+- Got my Elasticsearch + Redis setup to work, to analyze a large dataset from text mining and graph mining perspectives. Great results so far!
+- Preparing the MOOC on connected objects, for a shooting in the first week of July.
+- Teaching a module on "Big data" to eMBA students
+- Participating to recruitment committees, jurys... (that's the season for it)
+- More useful admin stuff to prepare for 2017/2018.
+- Got a minor revision before acceptance notice on a paper, more news on it when full acceptance is confirmed!
+
+
+
+- preparing a book made of the Gephi tutorials, still with Asciidoc. Discovering the world of xsl-fo: https://en.wikipedia.org/wiki/XSL_Formatting_Objects
+- published a tutorial on Vosviewer: https://seinecle.github.io/vosviewer-tutorials/
+- teaching myself Linux security for the need of the Twitter project. Publishing what I learn as a tutorial: https://seinecle.github.io/linux-security-tutorials/
+- attending the Sido on April 5 to search for sponsors for my MOOC on IoT: http://www.sido-event.com/en/ (could not find time at the end :-(
+- teaching a couple of courses in MBA, supervising students.
+- practised Elasticsearch (with Kibana and Xpack for graphs) and Redis. Learned how to establish a connection between 2 Linux servers through SSH.
+
+
+
+
+
 - now up to 14 http://seinecle.github.io/gephi-tutorials[tutorials for Gephi], more in preparation
 - re-published the similarity-computer plugin for Gephi: https://gephi.org/plugins/#/plugin/similaritycomputer
 - last preparation for the emlyon's digital night with 3DS, Accenture, Ada, Artefact and L'Oreal: http://data.em-lyon.com/2017/02/16/digital-night-2017/
