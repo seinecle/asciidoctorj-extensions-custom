@@ -11,6 +11,39 @@ last modified: {docdate}
 This is a now page. Websites usually have "about pages", this page gives a more instantaneous view. Something I do / have done is of interest to you? Get in touch at levallois@em-lyon.com or on Twitter! (@seinecle)
 
 
+- Launching the Msc in Digital Marketing and Data Science with Margherita Pagani and the teams at emlyon! -> http://graduate.em-lyon.com/en/MSc-in-Digital-Marketing-Data-Science
+- Renewing CODAPPS in a format hosted on Github: https://seinecle.github.io/codapps
+- Grading! Lots of grading!
+- Coordinating the activities of the http://data.em-lyon.com[Data R&D Institute] with the team (Renaud, Lynn and Jean)
+- Organized the screening of "Nothing 2 Hide" at emlyon
+- Involved in internal projects at emlyon on skills / competencies, on the new version of our executive programs, on the new version of the Programme Grande Ecole.
+- Working with Jean Savinien and PhD student Mohamed Benabdelkrim on Twitter networks
+- Finalized two recruitments in data science for emlyon!
+- Getting in touch with the http://www.digital-league.org/partenaire/loire/[Digital League] in the Loire region
+- Attended the 2017 edition of the http://complexnetworks.org/[Complex Network conference] in Lyon
+- Finished teaching http://seinecle.github.io/mk99[Big data for business] and http://seinecle.github.io/IoT4Entrepreneurs[Internet of Things for Entrepreneurs]
+- Taught a 3 days course with Guillaume Lecuyer on "Tech disruption and business impact" to a business audience in https://executive.em-lyon.com/Formations/Certificats/EMS02-Transformation-Digitale-des-Organisations[Certificat TDO by emlyon], once in Paris and once in Lyon.
+
+
+- Teaching two courses and updating their websites: http://seinecle.github.io/mk99[Big data for business] and http://seinecle.github.io/IoT4Entrepreneurs[Internet of Things for Entrepreneurs]
+- http://bfmbusiness.bfmtv.com/01-business-forum/evenement/agenda-apres-midi/[Speaker at the BFM 01 Business Forum] on the digital transformation of firms
+- Filming short video clips of experts on IoT - check the bottom page of http://seinecle.github.io/IoT4Entrepreneurs
+- Organizing work of the http://data.em-lyon.com[Data R&D Institute] with colleagues Renaud Demesmay, Lynn Cherny and Jean Savinien.
+- preparing the workshop on http://data.em-lyon.com/2017/09/06/discovertext-text-mining-product-workshop-paris-campus/[DiscoverText by Stu Shulman, to take place on Nov 2 in Paris].
+- Got my paper on the history of sociobiology published! Wow! The editor's "online first" version is http://doi.org/10.1007/s10739-017-9491-x[here], blog post and open access version to follow.
+- Participated to the https://air-challenge.grandlyon.com/[R Challenge] as a specialist of dataviz and data mashups
+- Taught a lecture on "Big data and marketing" to Ecole Centrale de Lyon students
+
+
+
+
+- Too busy to fill this now page, apparently
+
+
+
+- Too much in holidays to fill this now page, apparently
+
+
 - Preparing the launch of a Data R&D Institute at emlyon! Curious? Get in touch.
 - Advanced on a new Msc for emlyon
 - Updating my "big data for business" course for 2017/2018
