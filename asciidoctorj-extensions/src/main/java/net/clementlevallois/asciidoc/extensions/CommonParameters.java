@@ -10,14 +10,11 @@ package net.clementlevallois.asciidoc.extensions;
  * @author LEVALLOIS
  */
 public class CommonParameters {
-    
-    
+
 //    public static boolean applyDefaultPicWidth = true;
     public static boolean applyDefaultPicHeight = false;
-    
+
     public static String defaultPicWidth = "450";
     public static String defaultPicHeight = "550";
-    
-    public static boolean forcePicturesRefresh= false;
-    
+
 }

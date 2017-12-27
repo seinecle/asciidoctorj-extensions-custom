@@ -5,6 +5,7 @@
  */
 package net.clementlevallois.asciidoc.extensions;
 
+import Utils.ImageAttributeExtractor;
 import org.asciidoctor.ast.Document;
 import org.asciidoctor.extension.Preprocessor;
 import org.asciidoctor.extension.PreprocessorReader;
@@ -14,7 +15,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -37,7 +37,10 @@ public class CommonPreProcessor extends Preprocessor {
             Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
     String asciiDocBasedir;
+    String docName;
+    String docToProcess;
     Path docBasedir;
+    boolean refreshPics;
 
     public CommonPreProcessor(Map<String, Object> config) {
         super(config);
@@ -46,9 +49,17 @@ public class CommonPreProcessor extends Preprocessor {
     @Override
     public PreprocessorReader process(Document document, PreprocessorReader reader) {
 
+        System.out.println("in the common preprocessor");
+
         asciiDocBasedir = System.getProperty("asciiDocMavenJavaSE.basedir");
         docBasedir = Paths.get((String) document.getAttr("docdir"));
+        docToProcess = (String) document.getAttr("doc-to-process");
+        docName = (String) document.getAttr("docname");
+        refreshPics = Boolean.valueOf((String)document.getAttr("refresh-pics"));
 
+        System.out.println("doc-to-process= " + docToProcess);
+        System.out.println("doc name= " + docName);
+        
         StringBuilder sb = new StringBuilder();
 
         List<String> lines = reader.readLines();
@@ -56,8 +67,8 @@ public class CommonPreProcessor extends Preprocessor {
         for (String line : lines) {
 
             //detecting image::http... and replacing it with the pic that is downloaded.
-            if (line.startsWith("image::http")) {
-                String extension = "[" + line.split("\\[")[1];
+            if (line.startsWith("image::http") | line.startsWith("image:http")) {
+                String extension = ImageAttributeExtractor.extractExtension(line);
                 if (!line.split("\\[")[0].endsWith(".gif") & !line.split("\\[")[0].endsWith(".png") & !line.split("\\[")[0].endsWith(".jpg") & !line.split("\\[")[0].endsWith(".jpeg")) {
                     try {
                         String titlePic = downloadPicAndReturnTitle(line);
@@ -94,25 +105,8 @@ public class CommonPreProcessor extends Preprocessor {
 
     private String downloadPicAndReturnTitle(String line) throws MalformedURLException, IOException {
         Matcher matcher = urlPattern.matcher(line);
-        BufferedImage image = null;
-        String title;
-        if (line.contains("title=")) {
-            String subline = line.substring(line.indexOf("title"));
-            subline = subline.substring(subline.indexOf("=") + 1, subline.indexOf("]"));
-            subline = subline.replaceAll("\"", "");
-            title = subline;
-            if (title.isEmpty()) {
-                title = "";
-            }
-        } else {
-            String extension = line.split("\\[")[1].replace("]", "");
-            if (!extension.contains("=")) {
-                title = extension;
-            } else {
-                title = "";
-            }
-        }
-        title = title.replaceAll("[ ,()]", "-");
+        BufferedImage image;
+        String title = ImageAttributeExtractor.extractTitle(line);
         System.out.println("title of pic: " + title);
 
         while (matcher.find()) {
@@ -133,7 +127,7 @@ public class CommonPreProcessor extends Preprocessor {
 
             File imageFile = new File(docBasedir.toString() + "/images/", title + ".png");
 
-            if (imageFile.exists() && !CommonParameters.forcePicturesRefresh) {
+            if (imageFile.exists() && !refreshPics) {
                 continue;
             }
 

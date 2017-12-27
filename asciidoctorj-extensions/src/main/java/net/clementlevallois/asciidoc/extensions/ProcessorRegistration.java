@@ -12,16 +12,16 @@ import org.asciidoctor.extension.spi.ExtensionRegistry;
 /**
  * @author LEVALLOIS
  */
-public class ProcessorRegistration implements ExtensionRegistry {
-
-    @Override
-    public void register(Asciidoctor asciidoctor) {
-
-        JavaExtensionRegistry javaExtensionRegistry = asciidoctor.javaExtensionRegistry();
-
-        System.out.println("Registering extension " + CommonPreProcessor.class.getSimpleName());
-        javaExtensionRegistry.preprocessor(CommonPreProcessor.class);
-        
-    }
-
-}
+//public class ProcessorRegistration implements ExtensionRegistry {
+//
+//    @Override
+//    public void register(Asciidoctor asciidoctor) {
+//
+//        JavaExtensionRegistry javaExtensionRegistry = asciidoctor.javaExtensionRegistry();
+//
+//        System.out.println("Registering extension " + CommonPreProcessor.class.getSimpleName());
+//        javaExtensionRegistry.preprocessor(CommonPreProcessor.class);
+//        
+//    }
+//
+//}

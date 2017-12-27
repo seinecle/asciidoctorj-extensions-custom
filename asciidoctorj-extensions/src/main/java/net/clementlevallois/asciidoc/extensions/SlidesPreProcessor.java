@@ -39,6 +39,12 @@ public class SlidesPreProcessor extends Preprocessor {
         statcounterSecurity = (String) document.getAttr("statcounter-project");
         statcounter = buildStatCounterString();
 
+        String docToProcess = (String) document.getAttr("doc-to-process");
+        String docName = (String) document.getAttr("docname");
+
+        System.out.println("doc-to-process= " + docToProcess);
+        System.out.println("doc name= " + docName);
+
         StringBuilder sb = new StringBuilder();
         docBasedir = Paths.get((String) document.getAttr("docdir"));
 
@@ -88,7 +94,7 @@ public class SlidesPreProcessor extends Preprocessor {
             bw.write(sb.toString());
             bw.close();
         } catch (IOException ex) {
-            Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SlidesPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return reader;
 

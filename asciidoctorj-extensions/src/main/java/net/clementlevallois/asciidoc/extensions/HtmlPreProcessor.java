@@ -42,9 +42,16 @@ public class HtmlPreProcessor extends Preprocessor {
         statcounterProject = (String) document.getAttr("statcounter-project");
         statcounterSecurity = (String) document.getAttr("statcounter-security");
         statcounter = buildStatCounterString();
-        
 
         docBasedir = Paths.get((String) document.getAttr("docdir"));
+
+        String docToProcess = (String) document.getAttr("doc-to-process");
+
+        String docName = (String) document.getAttr("docname");
+
+        System.out.println("doc-to-process= " + docToProcess);
+        System.out.println("doc name= " + docName);
+
 
         //writing this modified document to a temp folder, to be used by the revealjs maven build (see POM)
         final Path path = Paths.get(docBasedir.toString() + "/subdir");
@@ -77,25 +84,25 @@ public class HtmlPreProcessor extends Preprocessor {
     }
 
     private String buildStatCounterString() {
-            statcounter = "    <!-- Start of StatCounter Code for Default Guide -->\n"
-            + "    <script type=\"text/javascript\">\n"
-            + "        var sc_project = " + statcounterProject+";\n"
-            + "        var sc_invisible = 1;\n"
-            + "        var sc_security = \""+statcounterSecurity+"\";\n"
-            + "        var scJsHost = ((\"https:\" == document.location.protocol) ?\n"
-            + "            \"https://secure.\" : \"http://www.\");\n"
-            + "        document.write(\"<sc\" + \"ript type='text/javascript' src='\" +\n"
-            + "            scJsHost +\n"
-            + "            \"statcounter.com/counter/counter.js'></\" + \"script>\");\n"
-            + "    </script>\n"
-            + "    <noscript><div class=\"statcounter\"><a title=\"site stats\"\n"
-            + "    href=\"http://statcounter.com/\" target=\"_blank\"><img\n"
-            + "    class=\"statcounter\"\n"
-            + "    src=\"//c.statcounter.com/"+statcounterProject+"/0/"+statcounterSecurity+"/1/\" alt=\"site\n"
-            + "    stats\"></a></div></noscript>\n"
-            + "    <!-- End of StatCounter Code for Default Guide -->";
-            
-            return statcounter;
+        statcounter = "    <!-- Start of StatCounter Code for Default Guide -->\n"
+                + "    <script type=\"text/javascript\">\n"
+                + "        var sc_project = " + statcounterProject + ";\n"
+                + "        var sc_invisible = 1;\n"
+                + "        var sc_security = \"" + statcounterSecurity + "\";\n"
+                + "        var scJsHost = ((\"https:\" == document.location.protocol) ?\n"
+                + "            \"https://secure.\" : \"http://www.\");\n"
+                + "        document.write(\"<sc\" + \"ript type='text/javascript' src='\" +\n"
+                + "            scJsHost +\n"
+                + "            \"statcounter.com/counter/counter.js'></\" + \"script>\");\n"
+                + "    </script>\n"
+                + "    <noscript><div class=\"statcounter\"><a title=\"site stats\"\n"
+                + "    href=\"http://statcounter.com/\" target=\"_blank\"><img\n"
+                + "    class=\"statcounter\"\n"
+                + "    src=\"//c.statcounter.com/" + statcounterProject + "/0/" + statcounterSecurity + "/1/\" alt=\"site\n"
+                + "    stats\"></a></div></noscript>\n"
+                + "    <!-- End of StatCounter Code for Default Guide -->";
+
+        return statcounter;
 
     }
 
