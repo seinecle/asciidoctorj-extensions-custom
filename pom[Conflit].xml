@@ -22,10 +22,8 @@
         <asciidoctor-revealjs.version>master</asciidoctor-revealjs.version>
         <mainDirectory>${project}</mainDirectory>
         
-        <!--<doc.to.process>essential-notions-of-code.adoc</doc.to.process>-->
-        
-        <!--true and false values don't go well with Maven?? So please use yes or no-->
-        <refresh.pics>no</refresh.pics>
+<!--        <doc-to-process>en\apis-and-their-business-relevance.adoc</doc-to-process>-->
+        <refresh-pics>false</refresh-pics>
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
     </properties>
@@ -34,12 +32,12 @@
         <module>asciidoctorj-extensions</module>
         <!--<module>MojoPublishToMedium</module>-->
         <!--<module>../gephi tutorials/docs/</module>-->
-        <module>../codapps/docs/</module>
-        <!--<module>../blog/docs/</module>-->
+        <!--<module>../codapps/docs/</module>-->
         <!--<module>../linux security tutorials/docs/</module>-->
         <!--<module>../gephi scientometrics training/docs/</module>-->
         <!--<module>../vosviewer tutorials/docs/</module>-->
         <!--<module>../mk99/docs/</module>-->
+        <module>../blog/docs/</module>
         <!--<module>../sociobiology/docs/</module>-->
         <!--<module>../IoT for entrepreneurs/docs/</module>-->
         <!--<module>../compiler for single docs/docs/</module>-->

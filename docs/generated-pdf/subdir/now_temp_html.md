@@ -10,6 +10,21 @@ last modified: {docdate}
 
 This is a now page. Websites usually have "about pages", this page gives a more instantaneous view. Something I do / have done is of interest to you? Get in touch at levallois@em-lyon.com or on Twitter! (@seinecle)
 
+== Jan 2018
+
+Welcoming my new born in this world, Tristan!
+
+- Co-organized https://www.entreprisedufutur.com/congres/programme[the workshop on "Transforming your data into a patrimony"] with SEGECO at the Entreprise du Futur event.
+- Launched the 3-year Chaire on the "evaluation of data" with SEGECO. See the http://www.em-lyon.com/en/Press-Room/Folder/press-releases-management-school-france/SEGECO-and-emlyon-business-school-are-committed-to-ensuring-companies-enter-fully-into-the-data-economy-era[press release].
+- Hosted https://www.thefamily.co/about/balthazar-de-lavergne[Balthazar de Lavergne] from https://www.thefamily.co/[The Family] for the first class of https://seinecle.github.io/codapps/[Codapps] at emlyon - with 500 students in attendance!
+- Started monitoring the Q&As for Codapps on Github! Just https://github.com/seinecle/codapps/issues?q=is%3Aissue+is%3Aclosed[a couple of issues so far], but all dealt with successfully.
+- Interviewing candidates, going to a #highered fair, doing a http://www.campus-channel.com/fr/emlyon-business-school-msc-in-digital-marketing-data-sciences.html[live Q&A], working on a brochure... for our http://graduate.em-lyon.com/en/MSc-in-Digital-Marketing-Data-Science[Msc in Digital Marketing and Data Scienc to launch in Sept 2018 in Paris]!
+- Continuing to teach https://seinecle.github.io/IoT4Entrepreneurs/[IoT for Entrepreneurs] for the BBA at St-Etienne.
+- Still working on the Twitter project, coaching a team on a related Twitter study in Jean Savinien's class (including 2 students from Epitech Lyon!)
+- Helping a student launch his own course at emlyon on mnemotechnics
+- End of my supervision and defense for a project by engineering student Yuhan Wang at http://www.mines-stetienne.fr/en/[Ecole des Mines de St-Etienne]. She had to design a portal for an API service and she did an excellent job!
+- With https://www.linkedin.com/in/friesalexander/[Alexander Fries] doing all the work, we launched a http://data.em-lyon.com/podcasts-on-data-science-x-business/[series of podcasts] on data x biz: each episode is an interview of a professional. These interviews were made in the course https://seinecle.github.io/mk99/["Big data for business"] in the first semester of this year.
+
 == Nov / Dec 2017
 
 - Launching the Msc in Digital Marketing and Data Science with Margherita Pagani and the teams at emlyon! -> http://graduate.em-lyon.com/en/MSc-in-Digital-Marketing-Data-Science
@@ -18,6 +33,12 @@ This is a now page. Websites usually have "about pages", this page gives a more 
 - Coordinating the activities of the http://data.em-lyon.com[Data R&D Institute] with the team (Renaud, Lynn and Jean)
 - Organized the screening of "Nothing 2 Hide" at emlyon
 - Involved in internal projects at emlyon on skills / competencies, on the new version of our executive programs, on the new version of the Programme Grande Ecole.
+- Working with Jean Savinien and PhD student Mohamed Benabdelkrim on Twitter networks
+- Finalized two recruitments in data science for emlyon!
+- Getting in touch with the http://www.digital-league.org/partenaire/loire/[Digital League] in the Loire region
+- Attended the 2017 edition of the http://complexnetworks.org/[Complex Network conference] in Lyon
+- Finished teaching http://seinecle.github.io/mk99[Big data for business] and http://seinecle.github.io/IoT4Entrepreneurs[Internet of Things for Entrepreneurs]
+- Taught a 3 days course with Guillaume Lecuyer on "Tech disruption and business impact" to a business audience in https://executive.em-lyon.com/Formations/Certificats/EMS02-Transformation-Digitale-des-Organisations[Certificat TDO by emlyon], once in Paris and once in Lyon.
 
 == Oct 2017
 
@@ -28,6 +49,7 @@ This is a now page. Websites usually have "about pages", this page gives a more 
 - preparing the workshop on http://data.em-lyon.com/2017/09/06/discovertext-text-mining-product-workshop-paris-campus/[DiscoverText by Stu Shulman, to take place on Nov 2 in Paris].
 - Got my paper on the history of sociobiology published! Wow! The editor's "online first" version is http://doi.org/10.1007/s10739-017-9491-x[here], blog post and open access version to follow.
 - Participated to the https://air-challenge.grandlyon.com/[R Challenge] as a specialist of dataviz and data mashups
+- Taught a lecture on "Big data and marketing" to Ecole Centrale de Lyon students
 
 
 
@@ -108,28 +130,12 @@ This is a now page. Websites usually have "about pages", this page gives a more 
 - going to the http://congres.entreprisedufutur.com/["Entreprise du Futur"] event by Emlyon and Visiativ, in Lyon (January 19)
 - writing about https://medium.com/@seinecle[Lotka] and other things on https://medium.com/@seinecle[Medium]
 
-++++
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js"><\/script>')</script>
-
-<script src="js/plugins.js"></script>
-<script src="js/script.js"></script>
-<script src="js/helper.js"></script>
-<script>
-var _gaq=[["_setAccount","UA-29345603-1"],["_trackPageview"]];
-(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-s.parentNode.insertBefore(g,s)}(document,"script"));
-</script>
-
-<!-- Start of StatCounter Code -->
-
+pass:[<!-- Start of StatCounter Code -->
 <script type="text/javascript">
 var sc_project=4124187;
 var sc_invisible=1;
 var sc_security="61bf0883";
 </script>
-
 <script type="text/javascript"
 src="http://www.statcounter.com/counter/counter.js"></script><noscript><div
 class="statcounter"><a title="joomla analytics"
@@ -137,9 +143,7 @@ href="http://statcounter.com/joomla/" target="_blank"><img
 class="statcounter"
 src="http://c.statcounter.com/4124187/0/61bf0883/1/"
 alt="joomla analytics" ></a></div></noscript>
-
-<!-- End of StatCounter Code -->
-++++
+<!-- End of StatCounter Code -->]
 pass:[    <!-- Start of StatCounter Code for Default Guide -->
     <script type="text/javascript">
         var sc_project = null;

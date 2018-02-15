@@ -64,7 +64,7 @@ public class PdfPreProcessor extends Preprocessor {
 
             if (line.trim().startsWith("image:") && line.toLowerCase().contains(".gif")) {
                 try {
-                    String imagePrefix = (line.trim().startsWith("image::"))? "image::" : "image:";
+                    String imagePrefix = (line.trim().startsWith("image::")) ? "image::" : "image:";
                     String title = ImageAttributeExtractor.extractTitle(line);
                     String source = ImageAttributeExtractor.extractSource(line);
                     String extension = ImageAttributeExtractor.extractExtension(line);
@@ -80,15 +80,20 @@ public class PdfPreProcessor extends Preprocessor {
                     } else {
                         File input = new File(docBasedir.toString() + "/images/", source);
                         File output = new File(docBasedir.toString() + "/images/", title + ".png");
-                        
+
                         InputStream in = new FileInputStream(input);
                         ImageFrame[] readGif = ImageAttributeExtractor.readGif(in);
-                        
+
                         int frameNumber = Math.min(20, readGif.length);
 
-                        ImageIO.write(readGif[frameNumber].getImage(), "png", output);
-                        line = imagePrefix + title + ".png" + extension;
+                        if (frameNumber < 0 | frameNumber > readGif.length | readGif.length == 0) {
+                            //do nothing the gif is corrupted it has no frame
 
+                        } else {
+
+                            ImageIO.write(readGif[frameNumber -1].getImage(), "png", output);
+                            line = imagePrefix + title + ".png" + extension;
+                        }
                     }
 
                 } catch (MalformedURLException ex) {

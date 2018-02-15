@@ -41,7 +41,8 @@
                 <goal>install</goal>
             </goals>
             <properties>
-                <book-release>true</book-release>
+                <build-book>true</build-book>
+                
             </properties>
         </action>
         <action>
@@ -62,5 +63,25 @@
             <properties>
                 <toc-generation>true</toc-generation>
             </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-collate-documents-into-one</actionName>
+            <displayName>collate-documents-into-one</displayName>
+            <goals>
+                <goal>collate-documents-into-one</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>build-book</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-collate-docs-into-one</actionName>
+            <displayName>collate-docs-into-one</displayName>
+            <goals>
+                <goal>process-asciidoc</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>build-book</activatedProfile>
+            </activatedProfiles>
         </action>
     </actions>

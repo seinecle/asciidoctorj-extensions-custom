@@ -55,16 +55,35 @@ public class CommonPreProcessor extends Preprocessor {
         docBasedir = Paths.get((String) document.getAttr("docdir"));
         docToProcess = (String) document.getAttr("doc-to-process");
         docName = (String) document.getAttr("docname");
-        refreshPics = Boolean.valueOf((String)document.getAttr("refresh-pics"));
+        String refreshPicsString = (String) document.getAttr("refresh-pics");
+        refreshPics = (refreshPicsString.toLowerCase().equals("yes"));
+
+        if (docToProcess != null && !docToProcess.isEmpty()) {
+            if (!(docName + ".adoc").equals(docToProcess)) {
+                return null;
+            }
+        }
 
         System.out.println("doc-to-process= " + docToProcess);
         System.out.println("doc name= " + docName);
-        
         StringBuilder sb = new StringBuilder();
 
         List<String> lines = reader.readLines();
 
+        String previousLine = "";
+
         for (String line : lines) {
+
+            // the following 2 if conditions fix iframes which were not surrounded by ++++
+            if (line.startsWith("<iframe") && !previousLine.startsWith("++++")) {
+                sb.append("++++");
+                sb.append("\n");
+            }
+
+            if (!line.startsWith("++++") && previousLine.startsWith("<iframe")) {
+                sb.append("++++");
+                sb.append("\n");
+            }
 
             //detecting image::http... and replacing it with the pic that is downloaded.
             if (line.startsWith("image::http") | line.startsWith("image:http")) {
@@ -86,6 +105,7 @@ public class CommonPreProcessor extends Preprocessor {
             if (line.startsWith("image::")) {
                 sb.append("{nbsp} +\n");
             }
+            previousLine = line;
         }
         reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
 
@@ -108,6 +128,9 @@ public class CommonPreProcessor extends Preprocessor {
         BufferedImage image;
         String title = ImageAttributeExtractor.extractTitle(line);
         System.out.println("title of pic: " + title);
+        if (title.startsWith("Opening-the-The")) {
+            System.out.println("here");
+        }
 
         while (matcher.find()) {
             int matchStart = matcher.start(1);
@@ -127,7 +150,7 @@ public class CommonPreProcessor extends Preprocessor {
 
             File imageFile = new File(docBasedir.toString() + "/images/", title + ".png");
 
-            if (imageFile.exists() && !refreshPics) {
+            if (imageFile.exists() & !refreshPics) {
                 continue;
             }
 

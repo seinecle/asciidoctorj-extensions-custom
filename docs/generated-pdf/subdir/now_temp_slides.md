@@ -11,6 +11,20 @@ last modified: {docdate}
 This is a now page. Websites usually have "about pages", this page gives a more instantaneous view. Something I do / have done is of interest to you? Get in touch at levallois@em-lyon.com or on Twitter! (@seinecle)
 
 
+Welcoming my new born in this world, Tristan!
+
+- Co-organized https://www.entreprisedufutur.com/congres/programme[the workshop on "Transforming your data into a patrimony"] with SEGECO at the Entreprise du Futur event.
+- Launched the 3-year Chaire on the "evaluation of data" with SEGECO. See the http://www.em-lyon.com/en/Press-Room/Folder/press-releases-management-school-france/SEGECO-and-emlyon-business-school-are-committed-to-ensuring-companies-enter-fully-into-the-data-economy-era[press release].
+- Hosted https://www.thefamily.co/about/balthazar-de-lavergne[Balthazar de Lavergne] from https://www.thefamily.co/[The Family] for the first class of https://seinecle.github.io/codapps/[Codapps] at emlyon - with 500 students in attendance!
+- Started monitoring the Q&As for Codapps on Github! Just https://github.com/seinecle/codapps/issues?q=is%3Aissue+is%3Aclosed[a couple of issues so far], but all dealt with successfully.
+- Interviewing candidates, going to a #highered fair, doing a http://www.campus-channel.com/fr/emlyon-business-school-msc-in-digital-marketing-data-sciences.html[live Q&A], working on a brochure... for our http://graduate.em-lyon.com/en/MSc-in-Digital-Marketing-Data-Science[Msc in Digital Marketing and Data Scienc to launch in Sept 2018 in Paris]!
+- Continuing to teach https://seinecle.github.io/IoT4Entrepreneurs/[IoT for Entrepreneurs] for the BBA at St-Etienne.
+- Still working on the Twitter project, coaching a team on a related Twitter study in Jean Savinien's class (including 2 students from Epitech Lyon!)
+- Helping a student launch his own course at emlyon on mnemotechnics
+- End of my supervision and defense for a project by engineering student Yuhan Wang at http://www.mines-stetienne.fr/en/[Ecole des Mines de St-Etienne]. She had to design a portal for an API service and she did an excellent job!
+- With https://www.linkedin.com/in/friesalexander/[Alexander Fries] doing all the work, we launched a http://data.em-lyon.com/podcasts-on-data-science-x-business/[series of podcasts] on data x biz: each episode is an interview of a professional. These interviews were made in the course https://seinecle.github.io/mk99/["Big data for business"] in the first semester of this year.
+
+
 - Launching the Msc in Digital Marketing and Data Science with Margherita Pagani and the teams at emlyon! -> http://graduate.em-lyon.com/en/MSc-in-Digital-Marketing-Data-Science
 - Renewing CODAPPS in a format hosted on Github: https://seinecle.github.io/codapps
 - Grading! Lots of grading!
@@ -105,38 +119,23 @@ This is a now page. Websites usually have "about pages", this page gives a more 
 - going to the http://congres.entreprisedufutur.com/["Entreprise du Futur"] event by Emlyon and Visiativ, in Lyon (January 19)
 - writing about https://medium.com/@seinecle[Lotka] and other things on https://medium.com/@seinecle[Medium]
 
-++++
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js"><\/script>')</script>
-
-<script src="js/plugins.js"></script>
-<script src="js/script.js"></script>
-<script src="js/helper.js"></script>
-<script>
-var _gaq=[["_setAccount","UA-29345603-1"],["_trackPageview"]];
-(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-s.parentNode.insertBefore(g,s)}(document,"script"));
-</script>
-
-<!-- Start of StatCounter Code -->
-
+pass:[<!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">
 var sc_project=4124187;
 var sc_invisible=1;
 var sc_security="61bf0883";
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
 </script>
-
 <script type="text/javascript"
-src="http://www.statcounter.com/counter/counter.js"></script><noscript><div
-class="statcounter"><a title="joomla analytics"
-href="http://statcounter.com/joomla/" target="_blank"><img
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
+<noscript><div class="statcounter"><a title="free hit
+counter" href="http://statcounter.com/" target="_blank"><img
 class="statcounter"
-src="http://c.statcounter.com/4124187/0/61bf0883/1/"
-alt="joomla analytics" ></a></div></noscript>
-
-<!-- End of StatCounter Code -->
-++++
+src="//c.statcounter.com/4124187/0/61bf0883/1/" alt="free
+hit counter"></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->]
 pass:[    <!-- Start of StatCounter Code for Default Guide -->
     <script type="text/javascript">
         var sc_project = null;
