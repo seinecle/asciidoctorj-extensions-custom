@@ -9,20 +9,11 @@ import org.asciidoctor.ast.Document;
 import org.asciidoctor.extension.Preprocessor;
 import org.asciidoctor.extension.PreprocessorReader;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class HtmlPreProcessor extends Preprocessor {
 
@@ -37,50 +28,43 @@ public class HtmlPreProcessor extends Preprocessor {
     }
 
     @Override
-    public PreprocessorReader process(Document document, PreprocessorReader reader) {
+    public void process(Document document, PreprocessorReader reader) {
 
-        statcounterProject = (String) document.getAttr("statcounter-project");
-        statcounterSecurity = (String) document.getAttr("statcounter-security");
+        System.out.println("in the html preprocessor");
+        
+        statcounterProject = (String) document.getAttribute("statcounter-project");
+        statcounterSecurity = (String) document.getAttribute("statcounter-security");
         statcounter = buildStatCounterString();
 
-        docBasedir = Paths.get((String) document.getAttr("docdir"));
+        docBasedir = Paths.get((String) document.getAttribute("docdir"));
 
-        String docToProcess = (String) document.getAttr("doc-to-process");
+        String docToProcess = (String) document.getAttribute("doc-to-process");
 
-        String docName = (String) document.getAttr("docname");
+        String docName = (String) document.getAttribute("docname");
 
         System.out.println("doc-to-process= " + docToProcess);
         System.out.println("doc name= " + docName);
 
-
         //writing this modified document to a temp folder, to be used by the revealjs maven build (see POM)
-        final Path path = Paths.get(docBasedir.toString() + "/subdir");
-        path.toFile().mkdirs();
-
-        StringBuilder sb = new StringBuilder();
+//        final Path path = Paths.get(docBasedir.toString() + "/subdir");
+//        path.toFile().mkdirs();
 
         List<String> lines = reader.readLines();
-
+        List<String> newLines = new ArrayList();
         for (String line : lines) {
-
-            sb.append(line);
-            sb.append("\n");
+            newLines.add(line);
         }
+        newLines.add("pass:[" + statcounter + "]");
 
-        sb.append("pass:[" + statcounter + "]");
-        sb.append("\n");
-
-        reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
-
-        try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttr("docname") + "_temp_html.md")), "UTF-8"));
-            bw.write(sb.toString());
-            bw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return reader;
+//        reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
+        reader.restoreLines(newLines);
+//        try {
+//            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttribute("docname") + "_temp_html.md")), "UTF-8"));
+//            bw.write(sb.toString());
+//            bw.close();
+//        } catch (IOException ex) {
+//            Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     private String buildStatCounterString() {

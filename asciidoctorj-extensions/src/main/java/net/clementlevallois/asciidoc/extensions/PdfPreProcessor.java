@@ -16,13 +16,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 public class PdfPreProcessor extends Preprocessor {
 
@@ -34,27 +33,23 @@ public class PdfPreProcessor extends Preprocessor {
     }
 
     @Override
-    public PreprocessorReader process(Document document, PreprocessorReader reader) {
+    public void process(Document document, PreprocessorReader reader) {
 
         System.out.println("in the pdf preprocessor");
 
-        docBasedir = Paths.get((String) document.getAttr("docdir"));
+        docBasedir = Paths.get((String) document.getAttribute("docdir"));
+        System.out.println("doc base dir: " + docBasedir);
 
-        String docToProcess = (String) document.getAttr("doc-to-process");
+        String docToProcess = (String) document.getAttribute("doc-to-process");
 
-        String docName = (String) document.getAttr("docname");
+        String docName = (String) document.getAttribute("docname");
 
         System.out.println("doc-to-process= " + docToProcess);
         System.out.println("doc name= " + docName);
-
-//        System.out.println("doc base dir in pdf pre processor: "+docBasedir.toString());
-        //writing this modified document to a temp folder, to be used by the revealjs maven build (see POM)
-        final Path path = Paths.get(docBasedir.toString() + "/subdir");
-        path.toFile().mkdirs();
-
-        StringBuilder sb = new StringBuilder();
+//        final Path pathTempFile = Paths.get(pathSubdir.toString() + "/subdir/" + docName + "_temp_pdf.md");
 
         List<String> lines = reader.readLines();
+        List<String> newLines = new ArrayList();
 
         for (String line : lines) {
             //remove lines with raw html, because they would get written "as is" on the pdf.
@@ -91,7 +86,7 @@ public class PdfPreProcessor extends Preprocessor {
 
                         } else {
 
-                            ImageIO.write(readGif[frameNumber -1].getImage(), "png", output);
+                            ImageIO.write(readGif[frameNumber - 1].getImage(), "png", output);
                             line = imagePrefix + title + ".png" + extension;
                         }
                     }
@@ -107,20 +102,10 @@ public class PdfPreProcessor extends Preprocessor {
                 line = line.replace("//PDF:", "").trim();
             }
 
-            sb.append(line);
-            sb.append("\n");
+            newLines.add(line);
         }
-        reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
+        reader.restoreLines(newLines);
 
-        try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttr("docname") + "_temp_pdf.md")), "UTF-8"));
-            bw.write(sb.toString());
-            bw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return reader;
 
     }
 

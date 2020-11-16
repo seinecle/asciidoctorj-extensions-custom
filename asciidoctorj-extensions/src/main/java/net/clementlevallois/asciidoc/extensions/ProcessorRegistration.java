@@ -5,10 +5,6 @@
  */
 package net.clementlevallois.asciidoc.extensions;
 
-import org.asciidoctor.Asciidoctor;
-import org.asciidoctor.extension.JavaExtensionRegistry;
-import org.asciidoctor.extension.spi.ExtensionRegistry;
-
 /**
  * @author LEVALLOIS
  */

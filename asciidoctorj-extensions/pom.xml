@@ -20,6 +20,13 @@
             <artifactId>asciidoctorj</artifactId>
             <version>${asciidoctorj.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.11</version>
+            <type>jar</type>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -49,5 +56,4 @@
 
         </plugins>
     </build>
-
 </project>

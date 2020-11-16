@@ -28,11 +28,15 @@ public class ImageAttributeExtractor {
 
     public static String extractTitle(String line) {
         String title = "";
-        if (line.contains("title=")) {
+        if (line.contains("title")) {
             String subline = line.substring(line.indexOf("title"));
-            subline = subline.substring(subline.indexOf("=") + 1, subline.indexOf("]"));
+            int endOfTitle = subline.indexOf(",");
+            if (endOfTitle < 0) {
+                endOfTitle = subline.indexOf("]");
+            }
+            subline = subline.substring(subline.indexOf("=") + 1, endOfTitle).trim();
             subline = subline.replaceAll("\"", "");
-            title = subline;
+            title = subline.trim();
             if (title.isEmpty()) {
                 title = "";
             }
@@ -50,161 +54,165 @@ public class ImageAttributeExtractor {
     }
 
     public static String extractSource(String line) {
-        String title = "";
-        String subline = line.substring(0,line.indexOf("["));
-        subline = subline.substring(subline.lastIndexOf(":")+1);
+        String title;
+        String subline = line.substring(0, line.indexOf("["));
+        subline = subline.substring(subline.lastIndexOf(":") + 1);
         title = subline;
         return title;
     }
-    
+
     public static String extractExtension(String line) {
-        return "[" + line.split("\\[")[1];
-    }
-    
-    public static ImageFrame[] readGif(InputStream stream) throws IOException{
-    ArrayList<ImageFrame> frames = new ArrayList<ImageFrame>(2);
-
-    ImageReader reader = (ImageReader) ImageIO.getImageReadersByFormatName("gif").next();
-    reader.setInput(ImageIO.createImageInputStream(stream));
-
-    int lastx = 0;
-    int lasty = 0;
-
-    int width = -1;
-    int height = -1;
-
-    IIOMetadata metadata = reader.getStreamMetadata();
-
-    Color backgroundColor = null;
-
-    if(metadata != null) {
-        IIOMetadataNode globalRoot = (IIOMetadataNode) metadata.getAsTree(metadata.getNativeMetadataFormatName());
-
-        NodeList globalColorTable = globalRoot.getElementsByTagName("GlobalColorTable");
-        NodeList globalScreeDescriptor = globalRoot.getElementsByTagName("LogicalScreenDescriptor");
-
-        if (globalScreeDescriptor != null && globalScreeDescriptor.getLength() > 0){
-            IIOMetadataNode screenDescriptor = (IIOMetadataNode) globalScreeDescriptor.item(0);
-
-            if (screenDescriptor != null){
-                width = Integer.parseInt(screenDescriptor.getAttribute("logicalScreenWidth"));
-                height = Integer.parseInt(screenDescriptor.getAttribute("logicalScreenHeight"));
-            }
-        }
-
-        if (globalColorTable != null && globalColorTable.getLength() > 0){
-            IIOMetadataNode colorTable = (IIOMetadataNode) globalColorTable.item(0);
-
-            if (colorTable != null) {
-                String bgIndex = colorTable.getAttribute("backgroundColorIndex");
-
-                IIOMetadataNode colorEntry = (IIOMetadataNode) colorTable.getFirstChild();
-                while (colorEntry != null) {
-                    if (colorEntry.getAttribute("index").equals(bgIndex)) {
-                        int red = Integer.parseInt(colorEntry.getAttribute("red"));
-                        int green = Integer.parseInt(colorEntry.getAttribute("green"));
-                        int blue = Integer.parseInt(colorEntry.getAttribute("blue"));
-
-                        backgroundColor = new Color(red, green, blue);
-                        break;
-                    }
-
-                    colorEntry = (IIOMetadataNode) colorEntry.getNextSibling();
-                }
-            }
+        if (line.startsWith("image:")) {
+            return "[" + line.split("\\[")[1];
+        } else {
+            return "";
         }
     }
 
-    BufferedImage master = null;
-    boolean hasBackround = false;
+    public static ImageFrame[] readGif(InputStream stream) throws IOException {
+        ArrayList<ImageFrame> frames = new ArrayList<ImageFrame>(2);
 
-    for (int frameIndex = 0;; frameIndex++) {
-        BufferedImage image;
-        try{
-            image = reader.read(frameIndex);
-        }catch (IndexOutOfBoundsException io){
-            break;
-        }
+        ImageReader reader = (ImageReader) ImageIO.getImageReadersByFormatName("gif").next();
+        reader.setInput(ImageIO.createImageInputStream(stream));
 
-        if (width == -1 || height == -1){
-            width = image.getWidth();
-            height = image.getHeight();
-        }
+        int lastx = 0;
+        int lasty = 0;
 
-        IIOMetadataNode root = (IIOMetadataNode) reader.getImageMetadata(frameIndex).getAsTree("javax_imageio_gif_image_1.0");
-        IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension").item(0);
-        NodeList children = root.getChildNodes();
+        int width = -1;
+        int height = -1;
 
-        int delay = Integer.valueOf(gce.getAttribute("delayTime"));
+        IIOMetadata metadata = reader.getStreamMetadata();
 
-        String disposal = gce.getAttribute("disposalMethod");
+        Color backgroundColor = null;
 
-        if (master == null){
-            master = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            master.createGraphics().setColor(backgroundColor);
-            master.createGraphics().fillRect(0, 0, master.getWidth(), master.getHeight());
+        if (metadata != null) {
+            IIOMetadataNode globalRoot = (IIOMetadataNode) metadata.getAsTree(metadata.getNativeMetadataFormatName());
 
-        hasBackround = image.getWidth() == width && image.getHeight() == height;
+            NodeList globalColorTable = globalRoot.getElementsByTagName("GlobalColorTable");
+            NodeList globalScreeDescriptor = globalRoot.getElementsByTagName("LogicalScreenDescriptor");
 
-            master.createGraphics().drawImage(image, 0, 0, null);
-        }else{
-            int x = 0;
-            int y = 0;
+            if (globalScreeDescriptor != null && globalScreeDescriptor.getLength() > 0) {
+                IIOMetadataNode screenDescriptor = (IIOMetadataNode) globalScreeDescriptor.item(0);
 
-            for (int nodeIndex = 0; nodeIndex < children.getLength(); nodeIndex++){
-                Node nodeItem = children.item(nodeIndex);
-
-                if (nodeItem.getNodeName().equals("ImageDescriptor")){
-                    NamedNodeMap map = nodeItem.getAttributes();
-
-                    x = Integer.valueOf(map.getNamedItem("imageLeftPosition").getNodeValue());
-                    y = Integer.valueOf(map.getNamedItem("imageTopPosition").getNodeValue());
+                if (screenDescriptor != null) {
+                    width = Integer.parseInt(screenDescriptor.getAttribute("logicalScreenWidth"));
+                    height = Integer.parseInt(screenDescriptor.getAttribute("logicalScreenHeight"));
                 }
             }
 
-            if (disposal.equals("restoreToPrevious")){
-                BufferedImage from = null;
-                for (int i = frameIndex - 1; i >= 0; i--){
-                    if (!frames.get(i).getDisposal().equals("restoreToPrevious") || frameIndex == 0){
-                        from = frames.get(i).getImage();
-                        break;
+            if (globalColorTable != null && globalColorTable.getLength() > 0) {
+                IIOMetadataNode colorTable = (IIOMetadataNode) globalColorTable.item(0);
+
+                if (colorTable != null) {
+                    String bgIndex = colorTable.getAttribute("backgroundColorIndex");
+
+                    IIOMetadataNode colorEntry = (IIOMetadataNode) colorTable.getFirstChild();
+                    while (colorEntry != null) {
+                        if (colorEntry.getAttribute("index").equals(bgIndex)) {
+                            int red = Integer.parseInt(colorEntry.getAttribute("red"));
+                            int green = Integer.parseInt(colorEntry.getAttribute("green"));
+                            int blue = Integer.parseInt(colorEntry.getAttribute("blue"));
+
+                            backgroundColor = new Color(red, green, blue);
+                            break;
+                        }
+
+                        colorEntry = (IIOMetadataNode) colorEntry.getNextSibling();
+                    }
+                }
+            }
+        }
+
+        BufferedImage master = null;
+        boolean hasBackround = false;
+
+        for (int frameIndex = 0;; frameIndex++) {
+            BufferedImage image;
+            try {
+                image = reader.read(frameIndex);
+            } catch (IndexOutOfBoundsException io) {
+                break;
+            }
+
+            if (width == -1 || height == -1) {
+                width = image.getWidth();
+                height = image.getHeight();
+            }
+
+            IIOMetadataNode root = (IIOMetadataNode) reader.getImageMetadata(frameIndex).getAsTree("javax_imageio_gif_image_1.0");
+            IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension").item(0);
+            NodeList children = root.getChildNodes();
+
+            int delay = Integer.valueOf(gce.getAttribute("delayTime"));
+
+            String disposal = gce.getAttribute("disposalMethod");
+
+            if (master == null) {
+                master = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+                master.createGraphics().setColor(backgroundColor);
+                master.createGraphics().fillRect(0, 0, master.getWidth(), master.getHeight());
+
+                hasBackround = image.getWidth() == width && image.getHeight() == height;
+
+                master.createGraphics().drawImage(image, 0, 0, null);
+            } else {
+                int x = 0;
+                int y = 0;
+
+                for (int nodeIndex = 0; nodeIndex < children.getLength(); nodeIndex++) {
+                    Node nodeItem = children.item(nodeIndex);
+
+                    if (nodeItem.getNodeName().equals("ImageDescriptor")) {
+                        NamedNodeMap map = nodeItem.getAttributes();
+
+                        x = Integer.valueOf(map.getNamedItem("imageLeftPosition").getNodeValue());
+                        y = Integer.valueOf(map.getNamedItem("imageTopPosition").getNodeValue());
                     }
                 }
 
-                {
-                    ColorModel model = from.getColorModel();
-                    boolean alpha = from.isAlphaPremultiplied();
-                    WritableRaster raster = from.copyData(null);
-                    master = new BufferedImage(model, raster, alpha, null);
+                if (disposal.equals("restoreToPrevious")) {
+                    BufferedImage from = null;
+                    for (int i = frameIndex - 1; i >= 0; i--) {
+                        if (!frames.get(i).getDisposal().equals("restoreToPrevious") || frameIndex == 0) {
+                            from = frames.get(i).getImage();
+                            break;
+                        }
+                    }
+
+                    {
+                        ColorModel model = from.getColorModel();
+                        boolean alpha = from.isAlphaPremultiplied();
+                        WritableRaster raster = from.copyData(null);
+                        master = new BufferedImage(model, raster, alpha, null);
+                    }
+                } else if (disposal.equals("restoreToBackgroundColor") && backgroundColor != null) {
+                    if (!hasBackround || frameIndex > 1) {
+                        master.createGraphics().fillRect(lastx, lasty, frames.get(frameIndex - 1).getWidth(), frames.get(frameIndex - 1).getHeight());
+                    }
                 }
-            }else if (disposal.equals("restoreToBackgroundColor") && backgroundColor != null){
-                if (!hasBackround || frameIndex > 1){
-                    master.createGraphics().fillRect(lastx, lasty, frames.get(frameIndex - 1).getWidth(), frames.get(frameIndex - 1).getHeight());
-                }
+                master.createGraphics().drawImage(image, x, y, null);
+
+                lastx = x;
+                lasty = y;
             }
-            master.createGraphics().drawImage(image, x, y, null);
-
-            lastx = x;
-            lasty = y;
-        }
-
-        {
-            BufferedImage copy;
 
             {
-                ColorModel model = master.getColorModel();
-                boolean alpha = master.isAlphaPremultiplied();
-                WritableRaster raster = master.copyData(null);
-                copy = new BufferedImage(model, raster, alpha, null);
+                BufferedImage copy;
+
+                {
+                    ColorModel model = master.getColorModel();
+                    boolean alpha = master.isAlphaPremultiplied();
+                    WritableRaster raster = master.copyData(null);
+                    copy = new BufferedImage(model, raster, alpha, null);
+                }
+                frames.add(new ImageFrame(copy, delay, disposal, image.getWidth(), image.getHeight()));
             }
-            frames.add(new ImageFrame(copy, delay, disposal, image.getWidth(), image.getHeight()));
+
+            master.flush();
         }
+        reader.dispose();
 
-        master.flush();
+        return frames.toArray(new ImageFrame[frames.size()]);
     }
-    reader.dispose();
-
-    return frames.toArray(new ImageFrame[frames.size()]);
-}
 
 }

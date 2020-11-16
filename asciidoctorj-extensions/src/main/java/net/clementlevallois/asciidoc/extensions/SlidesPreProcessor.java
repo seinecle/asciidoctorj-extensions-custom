@@ -12,6 +12,7 @@ import org.asciidoctor.extension.PreprocessorReader;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,73 +32,96 @@ public class SlidesPreProcessor extends Preprocessor {
     }
 
     @Override
-    public PreprocessorReader process(Document document, PreprocessorReader reader) {
+    public void process(Document document, PreprocessorReader reader) {
 
         System.out.println("in the slides preprocessor");
 
-        statcounterProject = (String) document.getAttr("statcounter-project");
-        statcounterSecurity = (String) document.getAttr("statcounter-project");
+        statcounterProject = (String) document.getAttribute("statcounter-project");
+        statcounterSecurity = (String) document.getAttribute("statcounter-project");
         statcounter = buildStatCounterString();
 
-        String docToProcess = (String) document.getAttr("doc-to-process");
-        String docName = (String) document.getAttr("docname");
+        String docToProcess = (String) document.getAttribute("doc-to-process");
+        String docName = (String) document.getAttribute("docname");
 
         System.out.println("doc-to-process= " + docToProcess);
         System.out.println("doc name= " + docName);
 
-        StringBuilder sb = new StringBuilder();
-        docBasedir = Paths.get((String) document.getAttr("docdir"));
+//        StringBuilder sb = new StringBuilder();
+        docBasedir = Paths.get((String) document.getAttribute("docdir"));
 
         //writing this modified document to a temp folder, to be used by the revealjs maven build (see POM)
-        final Path path = Paths.get(docBasedir.toString() + "/subdir");
-        path.toFile().mkdirs();
+//        final Path path = Paths.get(docBasedir.toString() + "/subdir");
+//        path.toFile().mkdirs();
 
         List<String> lines = reader.readLines();
+        List<String> newLines = new ArrayList();
 
         // managing titles and slides beginnings
         boolean previousLineIsPic = false;
+        boolean previousLineIsPageBreak = false;
         for (String line : lines) {
-            if (line.startsWith("== ")) {
-                continue;
+
+            // we put 4 level titles instead of three, as level three would trigger vertical scrolling of slides, which I don't want
+            if (line.startsWith("=== ")) {
+                line = "=" + line;
             }
-            if (line.startsWith("//ST:")) {
-                line = line.replace("//ST:", "== ").trim();
-                if (line.equals("==")) {
-                    line = line + " !";
+
+            if (line.startsWith("==== ")) {
+                if (!previousLineIsPageBreak) {
+                    newLines.add("== !");
                 }
             }
 
+            // inserting slide breaks when the //+ annotation is present
+            if (line.equals("//+") || line.equals("// +")) {
+                newLines.add("");
+                line = line.replace("//+", "== !").trim();
+                line = line.replace("// +", "== !").trim();
+            }
+
+            // we don't need to add extra white lines after pics for slide output
             if (previousLineIsPic && line.startsWith("{nbsp} +")) {
                 line = "";
             }
 
-            //adding a "stretch" class to images. See: https://github.com/asciidoctor/asciidoctor-reveal.js/#stretch-class-attribute
-            if (line.startsWith("image::")) {
-                sb.append("[.stretch]");
-                sb.append("\n");
+            //adding a "stretch" class to images and a page break before. See: https://github.com/asciidoctor/asciidoctor-reveal.js/#stretch-class-attribute
+            if (line.startsWith("image::") | line.startsWith("video:")) {
+                if (!previousLineIsPageBreak) {
+                    newLines.add("== !");
+                }
+                newLines.add("[.stretch]");
                 previousLineIsPic = true;
             } else {
                 previousLineIsPic = false;
             }
+            newLines.add(line);
 
-            sb.append(line);
-            sb.append("\n");
+            // add a page (slide) break after titles, images, videos... if there was not a page break at the previous line already
+            if (!line.equals("====") & ((line.startsWith("=") | line.startsWith("image::") | line.startsWith("video:")) & !line.trim().equals("== !"))) {
+                newLines.add("== !");
+                previousLineIsPageBreak = true;
+            } else if (!line.trim().isEmpty()) {
+                previousLineIsPageBreak = false;
+            }
+
+            // signaling that titles have generated page breaks: so images immediately following titles won't need to be preceded by an additional page break
+            if (line.startsWith("=") | line.startsWith("image::") | line.startsWith("video:")) {
+                previousLineIsPageBreak = true;
+            }
+
         }
 
-        sb.append("pass:[" + statcounter + "]");
-        sb.append("\n");
+        newLines.add("pass:[" + statcounter + "]");
 
-        reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
+        reader.restoreLines(newLines);
 
-        try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttr("docname") + "_temp_slides.md")), "UTF-8"));
-            bw.write(sb.toString());
-            bw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(SlidesPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return reader;
-
+//        try {
+//            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttr("docname") + "_temp_slides.md")), "UTF-8"));
+//            bw.write(sb.toString());
+//            bw.close();
+//        } catch (IOException ex) {
+//            Logger.getLogger(SlidesPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     private String buildStatCounterString() {

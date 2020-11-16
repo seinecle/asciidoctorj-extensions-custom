@@ -5,6 +5,8 @@
             <displayName>collate-documents-into-one</displayName>
             <goals>
                 <goal>generate-resources</goal>
+                <goal>generate-sources</goal>
+                
             </goals>
         </action>
     </actions>

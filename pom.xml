@@ -9,37 +9,51 @@
     <packaging>pom</packaging>
 
     <properties>
+        <!--common properties-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<!--        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>-->
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <asciidoctor.maven.plugin.version>1.5.5</asciidoctor.maven.plugin.version>
-        <asciidoctorj.version>1.5.6</asciidoctorj.version>
-        <asciidoctorj.pdf.version>1.5.0-alpha.16</asciidoctorj.pdf.version>
-        <jruby.version>1.7.26</jruby.version>
-        <revealjs.version>3.6.0</revealjs.version>
+        <asciidoctor.maven.plugin.version>2.1.0</asciidoctor.maven.plugin.version>
+        <asciidoctorj.version>2.4.1</asciidoctorj.version>
+        <jruby.version>9.2.13.0</jruby.version>
+        
+        <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
+        <revealjs.version>3.9.2</revealjs.version>
         <asciidoctor-revealjs.version>master</asciidoctor-revealjs.version>
         <mainDirectory>${project}</mainDirectory>
         
-        <!--<doc.to.process>essential-notions-of-code.adoc</doc.to.process>-->
+        <!--fundamentals / advanced / all / datom / test-->
+        <book-id>datom</book-id>
+        <book-chapters-folder>${basedir}/src/main/asciidoc/en</book-chapters-folder>
+        <book-build-folder>${basedir}/src/main/asciidoc/book/build</book-build-folder>
+        <collated-adocs>assembled-adocs.adoc</collated-adocs>
+        <collated-adocs-with-index>assembled-adocs-with-index.adoc</collated-adocs-with-index>
+        <collated-adocs-with-extra-pages>assembled-adocs-with-extra-pages.adoc</collated-adocs-with-extra-pages>
+        
+        <source.directory>${basedir}/src/main/asciidoc</source.directory>
+        <image.directory>../images</image.directory>
+        
+        <!--to run just one file uncomment these lines-->
+<!--        <doc.to.process>personalisation.adoc</doc.to.process>
+        <doc.to.process.full.path>en/${doc.to.process}</doc.to.process.full.path>-->
         
         <!--true and false values don't go well with Maven?? So please use yes or no-->
         <refresh.pics>no</refresh.pics>
-        <maven.compiler.source>1.5</maven.compiler.source>
-        <maven.compiler.target>1.5</maven.compiler.target>
+
     </properties>
 
     <modules>
         <module>asciidoctorj-extensions</module>
         <!--<module>MojoPublishToMedium</module>-->
-        <!--<module>../gephi tutorials/docs/</module>-->
-        <module>../codapps/docs/</module>
+        <module>../gephi tutorials/docs/</module>
+        <!--<module>../codapps/docs/</module>-->
         <!--<module>../blog/docs/</module>-->
+        <!--<module>../4D/docs/</module>-->
         <!--<module>../linux security tutorials/docs/</module>-->
         <!--<module>../gephi scientometrics training/docs/</module>-->
         <!--<module>../vosviewer tutorials/docs/</module>-->
-        <!--<module>../mk99/docs/</module>-->
+        <module>../mk99/docs/</module>
         <!--<module>../sociobiology/docs/</module>-->
         <!--<module>../IoT for entrepreneurs/docs/</module>-->
         <!--<module>../compiler for single docs/docs/</module>-->
@@ -49,7 +63,7 @@
             <plugin>
                 <groupId>org.commonjava.maven.plugins</groupId>
                 <artifactId>directory-maven-plugin</artifactId>
-                <version>0.1</version>
+                <version>0.3.1</version>
                 <executions>
                     <execution>
                         <id>directories</id>
