@@ -25,8 +25,10 @@ import javax.imageio.ImageIO;
 
 public class PdfPreProcessor extends Preprocessor {
 
-    String param;
     Path docBasedir;
+    Path directorySourceFile;
+    Path directoryAllSources;
+    Path basedir;
 
     public PdfPreProcessor(Map<String, Object> config) {
         super(config);
@@ -35,22 +37,25 @@ public class PdfPreProcessor extends Preprocessor {
     @Override
     public void process(Document document, PreprocessorReader reader) {
 
-        System.out.println("in the pdf preprocessor");
+        String docToProcess = (String) document.getAttribute("doc-to-process");
+        System.out.println("doc-to-process= " + docToProcess);
 
+        directoryAllSources = Paths.get((String) document.getAttribute("source-directory"));
+        System.out.println("dir all sources = " + directoryAllSources);
+
+        directorySourceFile = Path.of(directoryAllSources.toString(), "subdir"); // because the pre-processor extension delivered an intermediary source file in this subdir folder.
+        System.out.println("source directory = " + directorySourceFile);
+
+        basedir = directoryAllSources.getParent().getParent().getParent();
+        System.out.println("base directory = " + basedir);
+        String docName = (String) document.getAttribute("docname") + ".adoc";
+        System.out.println("doc name= " + docName);
+        Path pathSourceImageFolderForThisDoc = Path.of(directorySourceFile.toString(), "images");
+        System.out.println("in the pdf preprocessor");
         docBasedir = Paths.get((String) document.getAttribute("docdir"));
         System.out.println("doc base dir: " + docBasedir);
-
-        String docToProcess = (String) document.getAttribute("doc-to-process");
-
-        String docName = (String) document.getAttribute("docname");
-
-        System.out.println("doc-to-process= " + docToProcess);
-        System.out.println("doc name= " + docName);
-//        final Path pathTempFile = Paths.get(pathSubdir.toString() + "/subdir/" + docName + "_temp_pdf.md");
-
         List<String> lines = reader.readLines();
         List<String> newLines = new ArrayList();
-
         for (String line : lines) {
             //remove lines with raw html, because they would get written "as is" on the pdf.
             if (line.startsWith("pass:")) {
@@ -68,13 +73,13 @@ public class PdfPreProcessor extends Preprocessor {
 
                         URL url = new URL(source);
 
-                        File output = new File(docBasedir.toString() + "/images/", title + ".png");
+                        File output = new File(pathSourceImageFolderForThisDoc.toFile(), title + ".png");
 
                         ImageIO.write(ImageIO.read(url), "png", output);
                         line = imagePrefix + title + ".png" + extension;
                     } else {
-                        File input = new File(docBasedir.toString() + "/images/", source);
-                        File output = new File(docBasedir.toString() + "/images/", title + ".png");
+                        File input = new File(pathSourceImageFolderForThisDoc.toFile(), source);
+                        File output = new File(pathSourceImageFolderForThisDoc.toFile(), title + ".png");
 
                         InputStream in = new FileInputStream(input);
                         ImageFrame[] readGif = ImageAttributeExtractor.readGif(in);
@@ -85,7 +90,6 @@ public class PdfPreProcessor extends Preprocessor {
                             //do nothing the gif is corrupted it has no frame
 
                         } else {
-
                             ImageIO.write(readGif[frameNumber - 1].getImage(), "png", output);
                             line = imagePrefix + title + ".png" + extension;
                         }
@@ -105,7 +109,6 @@ public class PdfPreProcessor extends Preprocessor {
             newLines.add(line);
         }
         reader.restoreLines(newLines);
-
 
     }
 

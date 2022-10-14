@@ -18,10 +18,7 @@
             <actionName>CUSTOM-process slides for asciidoc</actionName>
             <displayName>process slides for asciidoc</displayName>
             <goals>
-                <goal>install</goal>
-                <goal>process-resources</goal>
-                <goal>package</goal>
-                
+                <goal>process-resources</goal>               
             </goals>
         </action>
         <action>

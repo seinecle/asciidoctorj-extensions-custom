@@ -70,7 +70,7 @@ public class ImageAttributeExtractor {
     }
 
     public static ImageFrame[] readGif(InputStream stream) throws IOException {
-        ArrayList<ImageFrame> frames = new ArrayList<ImageFrame>(2);
+        ArrayList<ImageFrame> frames = new ArrayList(2);
 
         ImageReader reader = (ImageReader) ImageIO.getImageReadersByFormatName("gif").next();
         reader.setInput(ImageIO.createImageInputStream(stream));

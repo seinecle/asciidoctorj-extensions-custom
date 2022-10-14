@@ -5,6 +5,7 @@
  */
 package net.clementlevallois.asciidoc.extensions;
 
+import java.io.IOException;
 import org.asciidoctor.ast.Document;
 import org.asciidoctor.extension.Preprocessor;
 import org.asciidoctor.extension.PreprocessorReader;
@@ -14,11 +15,16 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.io.FileUtils;
 
 public class HtmlPreProcessor extends Preprocessor {
 
-    String param;
-    Path docBasedir;
+    Path directorySourceFile;
+    Path directoryAllSources;
+    Path basedir;
+
     String statcounterProject;
     String statcounterSecurity;
     String statcounter;
@@ -30,34 +36,50 @@ public class HtmlPreProcessor extends Preprocessor {
     @Override
     public void process(Document document, PreprocessorReader reader) {
 
-        System.out.println("in the html preprocessor");
-        
-        statcounterProject = (String) document.getAttribute("statcounter-project");
-        statcounterSecurity = (String) document.getAttribute("statcounter-security");
-        statcounter = buildStatCounterString();
+        try {
+            System.out.println("in the html preprocessor");
 
-        docBasedir = Paths.get((String) document.getAttribute("docdir"));
+            statcounterProject = (String) document.getAttribute("statcounter-project");
+            statcounterSecurity = (String) document.getAttribute("statcounter-security");
+            statcounter = buildStatCounterString();
 
-        String docToProcess = (String) document.getAttribute("doc-to-process");
+            System.out.println("in the slides preprocessor");
 
-        String docName = (String) document.getAttribute("docname");
+            statcounterProject = (String) document.getAttribute("statcounter-project");
+            statcounterSecurity = (String) document.getAttribute("statcounter-project");
+            statcounter = buildStatCounterString();
 
-        System.out.println("doc-to-process= " + docToProcess);
-        System.out.println("doc name= " + docName);
+            String docToProcess = (String) document.getAttribute("doc-to-process");
+            System.out.println("doc-to-process= " + docToProcess);
 
-        //writing this modified document to a temp folder, to be used by the revealjs maven build (see POM)
-//        final Path path = Paths.get(docBasedir.toString() + "/subdir");
-//        path.toFile().mkdirs();
+            directoryAllSources = Paths.get((String) document.getAttribute("source-directory"));
+            System.out.println("dir all sources = " + directoryAllSources);
 
-        List<String> lines = reader.readLines();
-        List<String> newLines = new ArrayList();
-        for (String line : lines) {
-            newLines.add(line);
-        }
-        newLines.add("pass:[" + statcounter + "]");
+            directorySourceFile = Path.of(directoryAllSources.toString(), "subdir"); // because the pre-processor extension delivered an intermediary source file in this subdir folder.
+            System.out.println("source directory = " + directorySourceFile);
+
+            basedir = directoryAllSources.getParent().getParent().getParent();
+            System.out.println("base directory = " + basedir);
+
+            String docName = (String) document.getAttribute("docname") + ".adoc";
+            System.out.println("doc name= " + docName);
+
+            Path pathSourceImageFolderForThisDoc = Path.of(directoryAllSources.toString(), "images", docName);
+            Path pathTargetImageFolderForThisDoc = Path.of(basedir.toString(), "docs", "generated-html", "images", docName);
+
+            pathTargetImageFolderForThisDoc.toFile().mkdirs();
+
+            FileUtils.copyDirectory(pathSourceImageFolderForThisDoc.toFile(), pathTargetImageFolderForThisDoc.toFile());
+
+            List<String> lines = reader.readLines();
+            List<String> newLines = new ArrayList();
+            for (String line : lines) {
+                newLines.add(line);
+            }
+            newLines.add("pass:[" + statcounter + "]");
 
 //        reader.push_include(sb.toString(), "", "", 1, document.getAttributes());
-        reader.restoreLines(newLines);
+            reader.restoreLines(newLines);
 //        try {
 //            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path.toFile(), (String) document.getAttribute("docname") + "_temp_html.md")), "UTF-8"));
 //            bw.write(sb.toString());
@@ -65,6 +87,9 @@ public class HtmlPreProcessor extends Preprocessor {
 //        } catch (IOException ex) {
 //            Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+        } catch (IOException ex) {
+            Logger.getLogger(HtmlPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private String buildStatCounterString() {

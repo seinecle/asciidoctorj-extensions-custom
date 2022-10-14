@@ -43,30 +43,40 @@ import java.util.regex.Pattern;
 
 public class CommonPreProcessor extends Preprocessor {
 
-    //this pre processor does  things:
-    //1. downloading the image urls and saving them to png, then replacing image:: http://... by image: download.png in the aasciidoc document
-    //2. writing this new version of the asciidoc in a temp folder. The maven build for revealjs will use the doc from this temp folder.
-    //later, I will add more tasks to this pre-processor, split in several pre preprocessors for maintainability.
+    /**
+     * this pre processor does these things: 1. downloading the image urls and
+     * saving them to png
+     *
+     * 2. then replacing image:: http://... by image: download.png in the
+     * aasciidoc document
+     *
+     * 3. writing this new version of the asciidoc in a temp folder callded
+     * "subdir". The maven build will use the doc from this temp folder.
+     *
+     *
+     *
+     */
     private static final Pattern urlPattern = Pattern.compile(
             "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)",
             Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
-    static String asciiDocBasedir;
     String docName;
     String docToProcess;
-    static Path docBasedir;
     static Path baseDir;
-    Path imagesDir;
+    Path allSourcesImagesDocname;
+    Path allSourcesImages;
     boolean refreshPics;
-    String lang;
-    Map<String, Object> config;
     String magickPath;
+
+    Path tempSources;
+    Path allSources;
+    Path tempSourcesImages;
+    Path tempSourcesOneFolderForOneDoc;
 
     public CommonPreProcessor(Map<String, Object> config) {
         super(config);
-        this.config = config;
     }
 
     @Override
@@ -74,34 +84,37 @@ public class CommonPreProcessor extends Preprocessor {
 
         System.out.println("in the common preprocessor");
 
-        asciiDocBasedir = System.getProperty("asciiDocMavenJavaSE.basedir");
-        baseDir = Paths.get((String) document.getAttribute("path"));
-        docBasedir = Paths.get((String) document.getAttribute("docdir"));
         docName = (String) document.getAttribute("docname");
+        docName = (String) document.getAttribute("docname") + ".adoc";
+        System.out.println("doc name= " + docName);
+
         String refreshPicsString = ((String) document.getAttribute("refresh-pics"));
-//        String langString = ((String) document.getAttr("lang"));
-        imagesDir = Paths.get((String) document.getAttribute("images-dir"));
         refreshPics = !(refreshPicsString == null || !refreshPicsString.toLowerCase().equals("yes"));
-//        lang = "-" + langString;
+
         magickPath = (String) document.getAttribute("magick-path");
         System.out.println("magic path: " + magickPath);
 
-        if (docToProcess != null && !docToProcess.isEmpty()) {
-            if (!(docName + ".adoc").equals(docToProcess)) {
-            }
-        }
-//        if (lang.equals("-fr")) {
-//            if (!docName.contains("-fr")) {
-//            return null;
-//            }
-//        }
+        allSources = Paths.get((String) document.getAttribute("source-directory"));
+        System.out.println("dir all sources = " + allSources);
 
-        System.out.println("doc name= " + docName);
+        allSourcesImages = Path.of(allSources.toString(), "images");
 
-        final Path pathSubdir = Paths.get(docBasedir.toString()+ "/subdir/" );
-        pathSubdir.toFile().mkdirs();
-        final Path pathTempFile = Paths.get(pathSubdir.toString() +"/"+  docName+ ".adoc");
-        System.out.println("preprocessed intermediary file will be saved as " + pathTempFile.toString());
+        allSourcesImagesDocname = Path.of(allSources.toString(), "images", docName);
+        allSourcesImagesDocname.toFile().mkdirs();
+
+        System.out.println("all sources / images / docname: " + this.allSourcesImagesDocname);
+
+        docToProcess = (String) document.getAttribute("doc-to-process");
+        System.out.println("doc-to-process= " + docToProcess);
+
+        tempSources = Path.of(allSources.toString(), "subdir"); // because the pre-processor extension delivered an intermediary source file in this subdir folder.
+        System.out.println("source directory TRANSFORMED = " + tempSources);
+
+        tempSourcesImages = Path.of(tempSources.toString(), "images");
+        tempSourcesImages.toFile().mkdirs();
+
+        tempSourcesOneFolderForOneDoc = Paths.get(tempSources.toString() + "/" + docName);
+        System.out.println("preprocessed intermediary file will be saved as " + tempSourcesOneFolderForOneDoc.toString());
 
         List<String> lines = reader.readLines();
         List<String> newLines = new ArrayList();
@@ -119,11 +132,10 @@ public class CommonPreProcessor extends Preprocessor {
             if (!line.startsWith("++++") && previousLine.startsWith("<iframe")) {
                 newLines.add("++++");
             }
+
             if (line.startsWith("image:")) {
                 extension = ImageAttributeExtractor.extractExtension(line);
             }
-
-            String picFileName = "";
 
             //detecting image::http... and replacing it with the pic that is downloaded.
             if (line.startsWith("image::http") | line.startsWith("image:http")) {
@@ -136,31 +148,66 @@ public class CommonPreProcessor extends Preprocessor {
                         if (line.startsWith("image::")) {
                             line = "image::" + titlePic + ".png" + extension;
                         }
-                        picFileName = imagesDir + "/" + titlePic + ".png";
-                    } catch (IOException ex) {
-                        Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (DocumentException ex) {
+                        Path allSourcesImagesOneImage = Path.of(allSourcesImages.toString(), titlePic + ".png");
+                        String allSourcesImagesDocnameOnePicture = allSourcesImagesDocname + "/" + titlePic + ".png";
+                        String tempFolderImagesOnePicture = tempSourcesImages + "/" + titlePic + ".png";
+
+                        // for the HTML and SLIDES builds
+                        if (!Path.of(allSourcesImagesDocnameOnePicture).toFile().exists()) {
+                            // copy the image to the folder in images dedicated to this document
+                            Files.copy(allSourcesImagesOneImage, Path.of(allSourcesImagesDocnameOnePicture));
+                        }
+                        // for the PDF build
+                        if (!Path.of(tempFolderImagesOnePicture).toFile().exists()) {
+                            // copy the image to the folder in subdir / images
+                            Files.copy(allSourcesImagesOneImage, Path.of(tempFolderImagesOnePicture));
+                        }
+                    } catch (IOException | DocumentException ex) {
                         Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
 
             if (line.startsWith("image:")) {
+                if (line.contains("milano.jpg")){
+                    System.out.println("stop");
+                }
                 extension = ImageAttributeExtractor.extractExtension(line);
-            }
-
-            if (line.startsWith("image::")) {
                 line = line.replace(extension, "");
                 String fileType = line.substring(line.lastIndexOf("."), line.length());
                 String fileName = line.replace("image::", "");
-                String path = imagesDir + "/" + fileName;
+                fileName = fileName.replace("image:", "");
+                String pathImageInImageDirWithFileName = allSourcesImagesDocname + "/" + fileName;
+                String tempFolderImagesOnePicture = tempSourcesImages + "/" + fileName;
+                Path imageInGeneral = Path.of(allSourcesImages.toString(), fileName);
+                if (!Path.of(pathImageInImageDirWithFileName).toFile().exists()) {
+                    Path.of(pathImageInImageDirWithFileName).toFile().mkdirs();
+                    try {
+                        // for the HTML and SLIDES builds
+                        if (imageInGeneral.toFile().exists() & !Path.of(pathImageInImageDirWithFileName).toFile().exists()) {
+                            Files.copy(imageInGeneral, Path.of(pathImageInImageDirWithFileName));
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                if (!Path.of(tempFolderImagesOnePicture).toFile().exists()) {
+                    try {
+                        // for the PDF build
+                        // copy the image to the folder in subdir / images
+                        Files.copy(imageInGeneral, Path.of(tempFolderImagesOnePicture));
+                    } catch (IOException ex) {
+                        Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
 
                 if (extension.toLowerCase().contains("\"landscape")) {
-                    String pathRotatedPic = path.replace(fileType, "_panorama" + fileType);
-                    picFileName = pathRotatedPic;
-                    if (!new File(pathRotatedPic).exists()) {
+                    String pathRotatedPic = pathImageInImageDirWithFileName.replace(fileType, "_panorama" + fileType);
+                    String pathPicInTextDirectory = pathRotatedPic;
+                    if (!new File(pathPicInTextDirectory).exists()) {
                         try {
-                            rotateImageByDegreesWithJMagick(Paths.get(path).toFile(), 90, fileType);
+                            rotateImageByDegreesWithJMagick(Paths.get(pathImageInImageDirWithFileName).toFile(), 90, fileType);
                             Thread.sleep(1000l);
                         } catch (IOException | InterruptedException ex) {
                             Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
@@ -184,7 +231,7 @@ public class CommonPreProcessor extends Preprocessor {
         reader.restoreLines(newLines);
 
         try {
-            BufferedWriter bw = Files.newBufferedWriter(pathTempFile, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
+            BufferedWriter bw = Files.newBufferedWriter(tempSourcesOneFolderForOneDoc, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
             StringBuilder sb = new StringBuilder();
             newLines.iterator().forEachRemaining((line) -> sb.append(line).append("\n"));
             bw.write(sb.toString());
@@ -217,8 +264,8 @@ public class CommonPreProcessor extends Preprocessor {
                 }
             }
 
-            File imageFile = new File(imagesDir.toString() + "/", title + ".png");
-            File imageFileThumbnail = new File(imagesDir.toString() + "/", title + "_thumbnail.png");
+            File imageFile = new File(allSourcesImagesDocname.toString() + "/", title + ".png");
+            File imageFileThumbnail = new File(allSourcesImagesDocname.toString() + "/", title + "_thumbnail.png");
 
             if (imageFile.exists() & !refreshPics) {
                 continue;
