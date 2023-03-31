@@ -5,9 +5,6 @@
  */
 package net.clementlevallois.asciidoc.extensions;
 
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Rectangle;
-
 /**
  *
  * @author LEVALLOIS

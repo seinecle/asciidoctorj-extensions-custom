@@ -6,16 +6,6 @@
 package net.clementlevallois.asciidoc.extensions;
 
 import Utils.ImageAttributeExtractor;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfImage;
-import com.itextpdf.text.pdf.PdfIndirectObject;
-import com.itextpdf.text.pdf.PdfName;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -161,7 +151,7 @@ public class CommonPreProcessor extends Preprocessor {
                             // copy the image to the folder in subdir / images
                             Files.copy(allSourcesImagesOneImage, Path.of(tempFolderImagesOnePicture));
                         }
-                    } catch (IOException | DocumentException ex) {
+                    } catch (IOException ex) {
                         Logger.getLogger(CommonPreProcessor.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -241,7 +231,7 @@ public class CommonPreProcessor extends Preprocessor {
 
     }
 
-    private String downloadPicAndReturnTitle(String line) throws MalformedURLException, IOException, DocumentException {
+    private String downloadPicAndReturnTitle(String line) throws MalformedURLException, IOException {
         Matcher matcher = urlPattern.matcher(line);
         BufferedImage bufferedImage;
         String title = ImageAttributeExtractor.extractTitle(line);
@@ -351,46 +341,45 @@ public class CommonPreProcessor extends Preprocessor {
         return sbi;
     }
 
-    public static void saveCanvasAsPdf(File imageFile, String imageTitle) throws IOException, BadElementException, DocumentException {
-
-        Image image = Image.getInstance(imageFile.getAbsolutePath());
-
-        // print to A4
-        imageTitle = imageTitle.replace(".png", "");
-        Path pathPdfImage = Paths.get(baseDir + "/docs/pdf/" + imageTitle + "_A4.pdf");
-
-        PdfReader reader = new PdfReader(baseDir + "/docs/generated-book/blank-page.pdf");
-        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(pathPdfImage.toString()));
-        PdfImage stream = new PdfImage(image, "", null);
-        stream.put(new PdfName("ITXT_SpecialId"), new PdfName("123456789"));
-        PdfIndirectObject ref = stamper.getWriter().addToBody(stream);
-        image.setDirectReference(ref.getIndirectReference());
-        image.setAbsolutePosition(1, 1);
-        image.scaleToFit(PageSize.A4);
-
-        PdfContentByte over = stamper.getOverContent(1);
-        over.addImage(image);
-        stamper.close();
-        reader.close();
-
-        // print to A3
-        imageTitle = imageTitle.replace(".png", "");
-        pathPdfImage = Paths.get(baseDir + "/docs/pdf/" + imageTitle + "_A3.pdf");
-
-        reader = new PdfReader(baseDir + "/docs/generated-book/blank-page-A3.pdf");
-        stamper = new PdfStamper(reader, new FileOutputStream(pathPdfImage.toString()));
-        stream = new PdfImage(image, "", null);
-        stream.put(new PdfName("ITXT_SpecialId"), new PdfName("123456789"));
-        ref = stamper.getWriter().addToBody(stream);
-        image.setDirectReference(ref.getIndirectReference());
-        image.setAbsolutePosition(1, 1);
-        image.scaleToFit(PageSize.A3);
-
-        over = stamper.getOverContent(1);
-        over.addImage(image);
-        stamper.close();
-        reader.close();
-
-    }
+//    public static void saveCanvasAsPdf(File imageFile, String imageTitle) throws IOException, BadElementException, DocumentException {
+//
+//        Image image = Image.getInstance(imageFile.getAbsolutePath());
+//
+//        // print to A4
+//        imageTitle = imageTitle.replace(".png", "");
+//        Path pathPdfImage = Paths.get(baseDir + "/docs/pdf/" + imageTitle + "_A4.pdf");
+//
+//        PdfReader reader = new PdfReader(baseDir + "/docs/generated-book/blank-page.pdf");
+//        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(pathPdfImage.toString()));
+//        PdfImage stream = new PdfImage(image, "", null);
+//        stream.put(new PdfName("ITXT_SpecialId"), new PdfName("123456789"));
+//        PdfIndirectObject ref = stamper.getWriter().addToBody(stream);
+//        image.setDirectReference(ref.getIndirectReference());
+//        image.setAbsolutePosition(1, 1);
+//        image.scaleToFit(PageSize.A4);
+//
+//        PdfContentByte over = stamper.getOverContent(1);
+//        over.addImage(image);
+//        stamper.close();
+//        reader.close();
+//
+//        // print to A3
+//        imageTitle = imageTitle.replace(".png", "");
+//        pathPdfImage = Paths.get(baseDir + "/docs/pdf/" + imageTitle + "_A3.pdf");
+//
+//        reader = new PdfReader(baseDir + "/docs/generated-book/blank-page-A3.pdf");
+//        stamper = new PdfStamper(reader, new FileOutputStream(pathPdfImage.toString()));
+//        stream = new PdfImage(image, "", null);
+//        stream.put(new PdfName("ITXT_SpecialId"), new PdfName("123456789"));
+//        ref = stamper.getWriter().addToBody(stream);
+//        image.setDirectReference(ref.getIndirectReference());
+//        image.setAbsolutePosition(1, 1);
+//        image.scaleToFit(PageSize.A3);
+//
+//        over = stamper.getOverContent(1);
+//        over.addImage(image);
+//        stamper.close();
+//        reader.close();
+//    }
 
 }
