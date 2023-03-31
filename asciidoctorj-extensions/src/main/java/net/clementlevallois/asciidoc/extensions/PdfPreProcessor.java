@@ -57,6 +57,7 @@ public class PdfPreProcessor extends Preprocessor {
         List<String> lines = reader.readLines();
         List<String> newLines = new ArrayList();
         for (String line : lines) {
+//            System.out.println("line: "+  line);
             //remove lines with raw html, because they would get written "as is" on the pdf.
             if (line.startsWith("pass:")) {
                 continue;

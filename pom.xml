@@ -14,20 +14,25 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <asciidoctor.maven.plugin.version>2.2.2</asciidoctor.maven.plugin.version>
-        <asciidoctorj.version>2.5.4</asciidoctorj.version>
-        <jruby.version>9.2.13.0</jruby.version>
+        <asciidoctor.maven.plugin.version>2.2.3</asciidoctor.maven.plugin.version>
+        <asciidoctorj.version>2.5.7</asciidoctorj.version>
+        <jruby.version>9.3.8.0</jruby.version>
         
-        <asciidoctorj.pdf.version>2.3.0</asciidoctorj.pdf.version>
-        <revealjs.version>3.9.2</revealjs.version>
-        <asciidoctor-revealjs.version>3.1.0</asciidoctor-revealjs.version>
+        <asciidoctorj.pdf.version>2.3.4</asciidoctorj.pdf.version>
+
+        <!--
+        Check the compatibility matrix between revealjs and asciidoctor-revealjs
+        https://docs.asciidoctor.org/reveal.js-converter/latest/setup/compatibility-matrix/
+        -->
+        <revealjs.version>3.9.0</revealjs.version>
+        <asciidoctor-revealjs.version>4.3.1</asciidoctor-revealjs.version>
         <mainDirectory>${project}</mainDirectory>
        
         <source.directory>${basedir}/src/main/asciidoc</source.directory>
         <image.directory>../images</image.directory>
         
         <!--to run just one file uncomment these lines-->
-<!--        <doc.to.process>text-mining-for-business.adoc</doc.to.process>
+<!--        <doc.to.process>dataviz-past-present-future.adoc</doc.to.process>
         <doc.to.process.full.path>en/${doc.to.process}</doc.to.process.full.path>-->
         
         <!--true and false values don't go well with Maven?? So please use yes or no-->
@@ -45,7 +50,8 @@
         <!--<module>../linux security tutorials/docs/</module>-->
         <!--<module>../gephi scientometrics training/docs/</module>-->
         <!--<module>../vosviewer tutorials/docs/</module>-->
-        <module>../mk99/docs/</module>
+        <!--<module>../mk99/docs/</module>-->
+        <module>../methodology/docs/</module>
         <!--<module>../sociobiology/docs/</module>-->
         <!--<module>../IoT for entrepreneurs/docs/</module>-->
         <!--<module>../compiler for single docs/docs/</module>-->

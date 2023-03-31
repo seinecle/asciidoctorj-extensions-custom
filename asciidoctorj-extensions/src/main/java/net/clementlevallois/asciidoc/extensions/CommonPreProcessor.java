@@ -32,7 +32,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -169,10 +168,10 @@ public class CommonPreProcessor extends Preprocessor {
             }
 
             if (line.startsWith("image:")) {
-                if (line.contains("milano.jpg")){
-                    System.out.println("stop");
-                }
-                extension = ImageAttributeExtractor.extractExtension(line);
+//                if (line.contains("milano.jpg")){
+//                    System.out.println("stop");
+//                }
+//                extension = ImageAttributeExtractor.extractExtension(line);
                 line = line.replace(extension, "");
                 String fileType = line.substring(line.lastIndexOf("."), line.length());
                 String fileName = line.replace("image::", "");
@@ -231,7 +230,7 @@ public class CommonPreProcessor extends Preprocessor {
         reader.restoreLines(newLines);
 
         try {
-            BufferedWriter bw = Files.newBufferedWriter(tempSourcesOneFolderForOneDoc, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
+            BufferedWriter bw = Files.newBufferedWriter(tempSourcesOneFolderForOneDoc, Charset.forName("UTF-8"));
             StringBuilder sb = new StringBuilder();
             newLines.iterator().forEachRemaining((line) -> sb.append(line).append("\n"));
             bw.write(sb.toString());
