@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-collate-documents-into-one</actionName>
+            <displayName>collate-documents-into-one</displayName>
+            <goals>
+                <goal>generate-resources</goal>
+                <goal>generate-sources</goal>
+                
+            </goals>
+        </action>
+    </actions>
