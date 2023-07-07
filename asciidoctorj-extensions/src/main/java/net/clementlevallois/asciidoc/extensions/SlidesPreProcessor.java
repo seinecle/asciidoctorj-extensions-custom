@@ -20,6 +20,8 @@ public class SlidesPreProcessor extends Preprocessor {
     String statcounter;
 
     String docName;
+    
+    String info = "// 'Escape' or 'o' to see all sides, F11 for full screen, 's' for speaker notes";
 
     public SlidesPreProcessor(Map<String, Object> config) {
         super(config);
@@ -44,6 +46,10 @@ public class SlidesPreProcessor extends Preprocessor {
         boolean previousLineIsPic = false;
         boolean previousLineIsPageBreak = false;
         for (String line : lines) {
+            
+            if (line.trim().equals(info)){
+                line = line.substring(2).trim();
+            }
 
             // we put 4 level titles instead of three, as level three would trigger vertical scrolling of slides, which I don't want
             if (line.startsWith("=== ")) {
@@ -89,7 +95,7 @@ public class SlidesPreProcessor extends Preprocessor {
             }
 
             // signaling that titles have generated page breaks: so images immediately following titles won't need to be preceded by an additional page break
-            if (line.startsWith("=") | line.startsWith("image::") | line.startsWith("video:")) {
+            if (!line.equals("====") &&(line.startsWith("=") | line.startsWith("image::") | line.startsWith("video:") | line.startsWith("'Escape' or 'o'"))) {
                 previousLineIsPageBreak = true;
             }
 

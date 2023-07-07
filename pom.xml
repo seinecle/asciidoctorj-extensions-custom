@@ -15,17 +15,17 @@
         <maven.compiler.target>11</maven.compiler.target>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <asciidoctor.maven.plugin.version>2.2.3</asciidoctor.maven.plugin.version>
-        <asciidoctorj.version>2.5.7</asciidoctorj.version>
+        <asciidoctorj.version>2.5.8</asciidoctorj.version>
         <jruby.version>9.3.8.0</jruby.version>
         <gem.maven.plugin.version>2.0.1</gem.maven.plugin.version>
-        <gem.maven.revealjs.version>4.0.1</gem.maven.revealjs.version>
+        <gem.maven.revealjs.version>4.1.0</gem.maven.revealjs.version>
         <asciidoctorj.diagram.version>2.2.3</asciidoctorj.diagram.version>
         <download.maven.plugin.version>1.6.8</download.maven.plugin.version>
         <mavengem.wagon.version>1.0.3</mavengem.wagon.version>
         <com.itextpdf.version>5.5.13.3</com.itextpdf.version>
         <commons.lang.version>2.6</commons.lang.version>
         
-        <asciidoctorj.pdf.version>2.3.4</asciidoctorj.pdf.version>
+        <asciidoctorj.pdf.version>2.3.6</asciidoctorj.pdf.version>
         <magicPath>C:\Program Files\ImageMagick-7.1.0-Q16-HDRI\magick</magicPath>
         <graphviz.dot.path>C:\Program Files\Graphviz\bin\dot.exe</graphviz.dot.path>
 
@@ -33,7 +33,7 @@
         Check the compatibility matrix between revealjs and asciidoctor-revealjs
         https://docs.asciidoctor.org/reveal.js-converter/latest/setup/compatibility-matrix/
         -->
-        <revealjs.version>3.9.0</revealjs.version>
+        <revealjs.version>3.9.2</revealjs.version>
         <asciidoctor-revealjs.version>4.3.1</asciidoctor-revealjs.version>
         <mainDirectory>${project}</mainDirectory>
        
@@ -41,8 +41,8 @@
         <image.directory>${basedir}/src/main/asciidoc/images</image.directory>
         
         <!--to run just one file uncomment these 2 lines-->
-<!--        <doc.to.process>twitter-streaming-importer-en.adoc</doc.to.process>
-        <doc.to.process.full.path>${doc.to.process}/${doc.to.process}</doc.to.process.full.path>-->
+        <doc.to.process>zotero.adoc</doc.to.process>
+        <doc.to.process.full.path>${doc.to.process}/${doc.to.process}</doc.to.process.full.path>
         
         <!--true and false values don't go well with Maven?? So please use yes or no-->
         <refresh.pics>no</refresh.pics>
@@ -52,7 +52,7 @@
     <modules>
         <module>asciidoctorj-extensions</module>
         <!--<module>MojoPublishToMedium</module>-->
-        <module>../gephi tutorials/docs/</module>
+        <!--<module>../gephi tutorials/docs/</module>-->
         <!--<module>../codapps/docs/</module>-->
         <!--<module>../blog/docs/</module>-->
         <!--<module>../4D/docs/</module>-->
@@ -60,7 +60,8 @@
         <!--<module>../gephi scientometrics training/docs/</module>-->
         <!--<module>../vosviewer tutorials/docs/</module>-->
         <!--<module>../mk99/docs/</module>-->
-        <!--<module>../methodology/docs/</module>-->
+        <module>../methodology/docs/</module>
+        <!--<module>../chatgpt/docs/</module>-->
         <!--<module>../sociobiology/docs/</module>-->
         <!--<module>../IoT for entrepreneurs/docs/</module>-->
         <!--<module>../compiler for single docs/docs/</module>-->
@@ -88,15 +89,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <configuration>
-                    <mainClass>net.clementlevallois.adhoc.Test</mainClass>
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
 </project>

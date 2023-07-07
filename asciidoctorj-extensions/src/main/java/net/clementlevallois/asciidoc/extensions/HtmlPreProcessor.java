@@ -33,8 +33,12 @@ public class HtmlPreProcessor extends Preprocessor {
         List<String> lines = reader.readLines();
         List<String> newLines = new ArrayList();
         for (String line : lines) {
+            if (line.startsWith("//HTML:")) {
+                line = line.replace("//HTML:", "").trim();
+            }
             newLines.add(line);
         }
+        newLines.add("\n");
         newLines.add("pass:[" + statcounter + "]");
         reader.restoreLines(newLines);
 //        try {
@@ -47,7 +51,7 @@ public class HtmlPreProcessor extends Preprocessor {
     }
 
     private String buildStatCounterString() {
-        statcounter = "    <!-- Start of StatCounter Code for Default Guide -->\n"
+        statcounter = "\n    <!-- Start of StatCounter Code for Default Guide -->\n"
                 + "    <script type=\"text/javascript\">\n"
                 + "        var sc_project = " + statcounterProject + ";\n"
                 + "        var sc_invisible = 1;\n"
